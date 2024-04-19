@@ -1,0 +1,37 @@
+.Character {
+  position: relative;
+  width: 20%;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.Character::after {
+  content: attr(title);
+  position: absolute;
+  font-size: 20px;
+  color: white;
+  background-color: #000a;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  transition: opacity .4s ease;
+}
+
+.Character:hover::after {
+  opacity: 1;
+}
+
+
+.Character img {
+  transition: transform .4s ease;
+}
+
+.Character:hover img {
+  transform: scale(1.1);
+}

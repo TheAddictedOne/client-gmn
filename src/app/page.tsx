@@ -2,8 +2,8 @@
 
 import { useEffect,  useState } from 'react'
 import list from '@/app/data.json'
-import css from '@/components/Characters.module.css'
 import Character from '@/components/Character.jsx'
+import Characters from '@/components/Characters.tsx'
 import Header from '@/components/Header.jsx'
 import TierList from '@/components/TierList.jsx'
 
@@ -85,11 +85,11 @@ export default function Home() {
     <>
       <Header {...{ uuid } } />
       <TierList {...{ store, add } } />
-      <section className={css.Characters}>
+      <Characters>
         {store.listOfCharacters.map((character:Character, i:number) => {
           return <Character key={i} {...{ ...character, add } } />
         })}
-      </section>
+      </Characters>
     </>
   )
 }

@@ -1,3 +1,4 @@
+import css from '@/components/Character.module.css'
 import Image from "next/image"
 
 export default function Character({ name, slug, image, add }) {
@@ -10,8 +11,8 @@ export default function Character({ name, slug, image, add }) {
   }
 
   return (
-    <article id={slug} draggable {...{ onDragStart, onClick } } title={name}>
-      <Image src={image} layout="fill" alt={name} />
+    <article id={slug} className={css.Character} draggable {...{ onDragStart, onClick } } title={name}>
+      <Image src={image} fill sizes="20vw" alt={name} />
     </article>
   )
 }
