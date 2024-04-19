@@ -11,7 +11,7 @@ export default function Character({ name, slug, image, add }) {
 
   return (
     <article id={slug} draggable {...{ onDragStart, onClick } } title={name}>
-      <Image src={image} width={400} height={400} alt={name} />
+      <Image src={image} layout="fill" alt={name} />
     </article>
   )
 }

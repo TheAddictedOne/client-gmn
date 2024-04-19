@@ -1,15 +1,15 @@
 'use client'
 
-import Header from '@/components/Header.jsx'
-import TierList from '@/components/TierList.jsx'
-import Character from '@/components/Character.jsx'
-import css from '@/components/Characters.module.css'
 import { useEffect,  useState } from 'react'
 import list from '@/app/data.json'
+import css from '@/components/Characters.module.css'
+import Character from '@/components/Character.jsx'
+import Header from '@/components/Header.jsx'
+import TierList from '@/components/TierList.jsx'
 
 function initStore() {
   if (window.localStorage.length) {
-    return JSON.parse(window.localStorage.getItem('store'))
+    return JSON.parse(window.localStorage.getItem('store') || '')
   }
 
   const listOfCharacters = list.map((character) => {
@@ -37,10 +37,10 @@ export default function Home() {
   const [ws] = useState(new WebSocket('ws://localhost:8081'))
   const [store, setStore] = useState(initStore())
 
-  function add(slug, tier) {
+  function add(slug:string, tier:string) {
     const newStore = { ...store }
     for (const key of Object.keys(newStore)) {
-      newStore[key] = newStore[key].filter((character) => character.slug !== slug)
+      newStore[key] = newStore[key].filter((character:Character) => character.slug !== slug)
     }
     newStore[tier].push({
       name: slug.replaceAll('-', ' '),
@@ -86,7 +86,7 @@ export default function Home() {
       <Header {...{ uuid } } />
       <TierList {...{ store, add } } />
       <section className={css.Characters}>
-        {store.listOfCharacters.map((character, i) => {
+        {store.listOfCharacters.map((character:Character, i:number) => {
           return <Character key={i} {...{ ...character, add } } />
         })}
       </section>
