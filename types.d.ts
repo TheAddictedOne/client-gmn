@@ -1,13 +1,8 @@
-interface Character {
-  name:string;
-  slug:string;
-  image:string;
-}
+type Tier = 'A' | 'B' | 'C' | 'NONE'
 
-interface Store {
-  s: Character[];
-  a: Character[];
-  b: Character[];
-  c: Character[];
-  characters: Character[];
+interface Character {
+  name: string
+  slug: string
+  image: string
+  tier: Tier
 }

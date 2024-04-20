@@ -1,9 +1,9 @@
 import css from '@/components/Character.module.css'
-import Image from "next/image"
+import Image from 'next/image'
 
-export default function Character({ name, slug, image, add }) {
+export default function Character({ name, slug, image, move }) {
   const onClick = (event) => {
-    add(event.currentTarget.id, 'listOfCharacters')
+    move(event.currentTarget.id, 'characters')
   }
 
   const onDragStart = (event) => {
@@ -11,7 +11,13 @@ export default function Character({ name, slug, image, add }) {
   }
 
   return (
-    <article id={slug} className={css.Character} draggable {...{ onDragStart, onClick } } title={name}>
+    <article
+      id={slug}
+      className={css.Character}
+      draggable
+      {...{ onDragStart, onClick }}
+      title={name}
+    >
       <Image src={image} fill sizes="20vw" alt={name} />
     </article>
   )
