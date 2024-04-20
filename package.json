@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "vitest",
     "lint": "next lint",
     "bin:discover": "bun ./bin/discover.js",
     "bin:pull": "bun ./bin/pull.js"
@@ -17,11 +18,15 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@testing-library/react": "^15.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.2",
-    "typescript": "^5"
+    "jsdom": "^24.0.0",
+    "typescript": "^5",
+    "vitest": "^1.5.0"
   }
 }

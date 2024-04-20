@@ -1,19 +1,28 @@
 'use client'
 
+// ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+// │                                                                                               │
+// │ Import                                                                                        │
+// │                                                                                               │
+// └───────────────────────────────────────────────────────────────────────────────────────────────┘
+
 import { useEffect,  useState } from 'react'
-import list from '@/app/data.json'
+import names from '@/app/names.json'
 import Character from '@/components/Character.jsx'
 import Characters from '@/components/Characters.tsx'
 import Header from '@/components/Header.jsx'
 import TierList from '@/components/TierList.jsx'
+import WS from '@/components/ws.ts'
 
-function initStore() {
-  if (window.localStorage.length) {
-    return JSON.parse(window.localStorage.getItem('store') || '')
-  }
+// ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+// │                                                                                               │
+// │ Helpers                                                                                       │
+// │                                                                                               │
+// └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
-  const listOfCharacters = list.map((character) => {
-    const name = character.name.toLowerCase()
+export function initFromScratch(names : string[]) {
+  const characters = names.map((name) => {
+    name = name.toLowerCase()
     const slug = name.replaceAll(' ', '-')
     const image = `/${slug}.webp`
     return { name, slug, image }
@@ -24,18 +33,53 @@ function initStore() {
     a: [],
     b: [],
     c: [],
-    listOfCharacters,
+    characters,
   }
-
-  window.localStorage.setItem('store', JSON.stringify(store))
 
   return store
 }
 
+function init() {
+  const store = window.localStorage.getItem('store')
+  try {
+    return store ? JSON.parse(store) : initFromScratch(names)
+  }
+  catch (error) {
+    console.warn(error)
+    return initFromScratch(names)
+  }
+}
+
+export function move(store:Store, slug:string, tier:string) {
+  const newStore = { ...store }
+  for (const key of Object.keys(newStore)) {
+    newStore[key] = newStore[key].filter((character:Character) => character.slug !== slug)
+  }
+  newStore[tier].push({
+    name: slug.replaceAll('-', ' '),
+    slug,
+    image: `/${slug}.webp`
+  })
+  return newStore
+}
+
+// ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+// │                                                                                               │
+// │ Runtime                                                                                       │
+// │                                                                                               │
+// └───────────────────────────────────────────────────────────────────────────────────────────────┘
+
+const ws = WS()
+
+// ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+// │                                                                                               │
+// │ Component                                                                                     │
+// │                                                                                               │
+// └───────────────────────────────────────────────────────────────────────────────────────────────┘
+
 export default function Home() {
   const [uuid] = useState(window.crypto.randomUUID())
-  const [ws] = useState(new WebSocket('ws://localhost:8081'))
-  const [store, setStore] = useState(initStore())
+  const [store, setStore] = useState(init())
 
   function add(slug:string, tier:string) {
     const newStore = { ...store }
@@ -51,35 +95,12 @@ export default function Home() {
   }
 
   useEffect(() => {
-    ws.addEventListener('open', () => {
-      console.log('↑ WS opened')
-      ws.send(JSON.stringify({ cmd: 'ping' }))
-    })
-  
-    ws.addEventListener('message', ({ data }) => {
-      const json = JSON.parse(data)
-      if (!json.response) return
-  
-      switch (json.response) {
-        case 'ping':
-          console.log('↑ connected')
-          break
-  
-        default:
-          break
-      }
-    })
-  
-    ws.addEventListener('close', () => console.log('↑ WS closed'))
-  }, [])
-
-  useEffect(() => {
     const data = JSON.stringify(store)
     window.localStorage.setItem('store', data)
     setTimeout(() => {
       ws.send(JSON.stringify({ cmd: 'update', uuid, tierList: store }))
     }, 500)
-  }, [store, uuid, ws])
+  }, [store, uuid])
 
   return (
     <>

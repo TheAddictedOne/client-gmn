@@ -22,8 +22,5 @@ const db = await notion.databases.query({
   //   }
   // }
 })
-const results = db.results.map((result) => {
-  const name = result.properties.name.title[0].plain_text
-  return { name }
-})
-Bun.write('./src/app/data.json', JSON.stringify(results, null, 2))
+const results = db.results.map((result) => result.properties.name.title[0].plain_text)
+Bun.write('./src/app/names.json', JSON.stringify(results, null, 2))
