@@ -6,26 +6,21 @@ const URL = 'ws://localhost:8081'
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
-export default function WS() : WebSocket {
-
+export default function WS() {
   // ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
   // │                                                                                             │
   // │ Commands sent to server                                                                     │
   // │                                                                                             │
   // └─────────────────────────────────────────────────────────────────────────────────────────────┘
 
-  function pingToServer() {
+  function sendPing() {
+    if (ws.readyState !== 1) return
     ws.send(JSON.stringify({ cmd: 'ping' }))
   }
 
-  // ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-  // │                                                                                             │
-  // │ Commands received from server                                                               │
-  // │                                                                                             │
-  // └─────────────────────────────────────────────────────────────────────────────────────────────┘
-
-  const commands = {
-    ping: () => console.log('Ping')
+  function sendUpdate({ uuid, tierList }: { uuid: string; tierList: Character[] }) {
+    if (ws.readyState !== 1) return
+    ws.send(JSON.stringify({ cmd: 'update', uuid, tierList }))
   }
 
   // ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -36,18 +31,19 @@ export default function WS() : WebSocket {
 
   function onConnectionOpened() {
     console.log('Connection opened')
-    pingToServer()
+    sendPing()
   }
 
-  function onMessageReceived({ data }) {
+  function onMessageReceived({ data }: MessageEvent) {
     try {
       const json = JSON.parse(data)
       if (!json.response) {
         throw new Error('Unexpected format')
       }
-      commands[json.response](json.params)
-    }
-    catch (error) {
+      if (json.response === 'ping') {
+        console.log('Ping')
+      }
+    } catch (error) {
       console.warn(error)
     }
   }
@@ -68,8 +64,5 @@ export default function WS() : WebSocket {
   ws.addEventListener('message', onMessageReceived)
   ws.addEventListener('close', onConnectionClosed)
 
-  return ws
+  return { sendPing, sendUpdate }
 }
-
-
-

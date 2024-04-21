@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { initFromScratch, move } from '@/app/helpers.ts'
+import { initFromScratch, move, reorder } from '@/app/helpers.ts'
 
 test('initFromScratch', () => {
   const names = ['maya FEY', 'Aloy', 'amicia de Rune']
@@ -63,5 +63,58 @@ test('move no effect', () => {
     { name: 'makoto', slug: 'makoto', image: '/makoto.webp', tier: 'C' },
     { name: 'yuna', slug: 'yuna', image: '/yuna.webp', tier: 'A' },
     { name: 'velvet', slug: 'velvet', image: '/velvet.webp', tier: 'B' },
+  ])
+})
+
+test('reorder', () => {
+  const store: Character[] = [
+    { name: 'maya fey', slug: 'maya-fey', image: '/maya-fey.webp', tier: 'A' },
+    { name: 'aloy', slug: 'aloy', image: '/aloy.webp', tier: 'B' },
+    { name: 'amicia de rune', slug: 'amicia-de-rune', image: '/amicia-de-rune.webp', tier: 'C' },
+    { name: 'makoto', slug: 'makoto', image: '/makoto.webp', tier: 'D' },
+    { name: 'yuna', slug: 'yuna', image: '/yuna.webp', tier: 'NONE' },
+    { name: 'velvet', slug: 'velvet', image: '/velvet.webp', tier: 'D' },
+    { name: 'lilith', slug: 'lilith', image: '/lilith.webp', tier: 'C' },
+    { name: 'malenia', slug: 'malenia', image: '/malenia.webp', tier: 'B' },
+    { name: 'monika', slug: 'monika', image: '/monika.webp', tier: 'A' },
+    { name: 'ellie', slug: 'ellie', image: '/ellie.webp', tier: 'NONE' },
+    { name: 'edna', slug: 'edna', image: '/edna.webp', tier: 'NONE' },
+    { name: 'jill', slug: 'jill', image: '/jill.webp', tier: 'NONE' },
+  ]
+
+  expect(reorder(store)).toEqual([
+    {
+      tier: 'A',
+      characters: [
+        { name: 'maya fey', slug: 'maya-fey', image: '/maya-fey.webp', tier: 'A' },
+        { name: 'monika', slug: 'monika', image: '/monika.webp', tier: 'A' },
+      ],
+    },
+    {
+      tier: 'B',
+      characters: [
+        { name: 'aloy', slug: 'aloy', image: '/aloy.webp', tier: 'B' },
+        { name: 'malenia', slug: 'malenia', image: '/malenia.webp', tier: 'B' },
+      ],
+    },
+    {
+      tier: 'C',
+      characters: [
+        {
+          name: 'amicia de rune',
+          slug: 'amicia-de-rune',
+          image: '/amicia-de-rune.webp',
+          tier: 'C',
+        },
+        { name: 'lilith', slug: 'lilith', image: '/lilith.webp', tier: 'C' },
+      ],
+    },
+    {
+      tier: 'D',
+      characters: [
+        { name: 'makoto', slug: 'makoto', image: '/makoto.webp', tier: 'D' },
+        { name: 'velvet', slug: 'velvet', image: '/velvet.webp', tier: 'D' },
+      ],
+    },
   ])
 })

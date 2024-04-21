@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Character from '@/components/Character.jsx'
+import Character from '@/components/Character.tsx'
 import Characters from '@/components/Characters.tsx'
-import Header from '@/components/Header.jsx'
-import TierList from '@/components/TierList.jsx'
+import Header from '@/components/Header.tsx'
+import TierList from '@/components/TierList.tsx'
 import WS from '@/components/ws.ts'
-import { init, move } from '@/app/helpers.ts'
+import { init } from '@/app/helpers.ts'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
@@ -14,6 +14,7 @@ import { init, move } from '@/app/helpers.ts'
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
+const uuid = window.crypto.randomUUID()
 const ws = WS()
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -23,39 +24,27 @@ const ws = WS()
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
 export default function Home() {
-  const [uuid] = useState(window.crypto.randomUUID())
   const [store, setStore] = useState(init())
-
-  function add(slug: string, tier: string) {
-    const newStore = { ...store }
-    for (const key of Object.keys(newStore)) {
-      newStore[key] = newStore[key].filter((character: Character) => character.slug !== slug)
-    }
-    newStore[tier].push({
-      name: slug.replaceAll('-', ' '),
-      slug,
-      image: `/${slug}.webp`,
-    })
-    setStore(newStore)
-  }
 
   useEffect(() => {
     const data = JSON.stringify(store)
     window.localStorage.setItem('store', data)
-    setTimeout(() => {
-      ws.send(JSON.stringify({ cmd: 'update', uuid, tierList: store }))
-    }, 500)
-  }, [store, uuid])
+    ws.sendUpdate({ uuid, tierList: store })
+  }, [store])
 
   return (
-    <>
-      <Header {...{ uuid }} />
-      <TierList {...{ store, move }} />
-      <Characters>
-        {store.listOfCharacters.map((character: Character, i: number) => {
-          return <Character key={i} {...{ ...character, move }} />
-        })}
-      </Characters>
-    </>
+    store && (
+      <>
+        <Header {...{ uuid }} />
+        <TierList {...{ store, setStore }} />
+        <Characters>
+          {store
+            .filter((character) => character.tier === 'NONE')
+            .map((character, i) => {
+              return <Character key={i} {...{ store, setStore, character }} />
+            })}
+        </Characters>
+      </>
+    )
   )
 }

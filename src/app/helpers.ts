@@ -31,3 +31,19 @@ export function move(characters: Character[], slug: string, tier: Tier): Charact
     character.slug === slug ? { ...character, tier } : character
   )
 }
+
+export function reorder(characters: Character[]): Section[] {
+  const store: Section[] = [
+    { tier: 'A', characters: [] },
+    { tier: 'B', characters: [] },
+    { tier: 'C', characters: [] },
+    { tier: 'D', characters: [] },
+  ]
+  characters.forEach((character) => {
+    if (character.tier === 'A') store[0].characters.push(character)
+    if (character.tier === 'B') store[1].characters.push(character)
+    if (character.tier === 'C') store[2].characters.push(character)
+    if (character.tier === 'D') store[3].characters.push(character)
+  })
+  return store
+}
