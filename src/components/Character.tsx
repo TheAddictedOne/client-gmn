@@ -1,6 +1,6 @@
 import css from '@/components/Character.module.css'
 import Image from 'next/image'
-import { move } from '@/app/helpers.ts'
+import { move } from '@/utils/helpers.ts'
 
 export default function Character({ store, setStore, character }: CharacterParams) {
   const onClick = () => {

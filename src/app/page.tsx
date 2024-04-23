@@ -6,7 +6,7 @@ import Characters from '@/components/Characters.tsx'
 import Header from '@/components/Header.tsx'
 import TierList from '@/components/TierList.tsx'
 import WS from '@/components/ws.ts'
-import { init } from '@/app/helpers.ts'
+import { init } from '@/utils/helpers.ts'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
@@ -29,7 +29,7 @@ export default function Home() {
   useEffect(() => {
     const data = JSON.stringify(store)
     window.localStorage.setItem('store', data)
-    ws.sendUpdate({ uuid, tierList: store })
+    ws.sendUpdate({ uuid, characters: store })
   }, [store])
 
   return (

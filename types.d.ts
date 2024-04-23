@@ -27,3 +27,8 @@ interface SectionParams {
   tier: Tier
   characters: Character[]
 }
+
+interface ServerTierList {
+  uuid: string
+  characters: Character[]
+}

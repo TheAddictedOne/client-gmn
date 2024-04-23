@@ -1,4 +1,4 @@
-import names from '@/app/names.json'
+import names from '@/utils/names.json'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
@@ -46,4 +46,13 @@ export function reorder(characters: Character[]): Section[] {
     if (character.tier === 'D') store[3].characters.push(character)
   })
   return store
+}
+
+export function formatLeaderboard(leaderboard: ServerTierList[], entry: ServerTierList) {
+  if (leaderboard.find((tierList) => tierList.uuid === entry.uuid)) {
+    return leaderboard.map((tierList) => {
+      return tierList.uuid === entry.uuid ? entry : tierList
+    })
+  }
+  return [...leaderboard, entry]
 }

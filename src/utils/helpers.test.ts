@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { initFromScratch, move, reorder } from '@/app/helpers.ts'
+import { initFromScratch, move, reorder, formatLeaderboard } from '@/utils/helpers.ts'
 
 test('initFromScratch', () => {
   const names = ['maya FEY', 'Aloy', 'amicia de Rune']
@@ -115,6 +115,68 @@ test('reorder', () => {
         { name: 'makoto', slug: 'makoto', image: '/makoto.webp', tier: 'D' },
         { name: 'velvet', slug: 'velvet', image: '/velvet.webp', tier: 'D' },
       ],
+    },
+  ])
+})
+
+test('format leaderboard with empty', () => {
+  const leaderboard: ServerTierList[] = []
+  const entry: ServerTierList = {
+    uuid: 'abc',
+    characters: [
+      { name: 'urbosa', slug: 'urbosa', image: '/urbosa.webp', tier: 'A' },
+      { name: 'wanda', slug: 'wanda', image: '/wanda.webp', tier: 'D' },
+    ],
+  }
+  expect(formatLeaderboard(leaderboard, entry)).toEqual([
+    {
+      uuid: 'abc',
+      characters: [
+        { name: 'urbosa', slug: 'urbosa', image: '/urbosa.webp', tier: 'A' },
+        { name: 'wanda', slug: 'wanda', image: '/wanda.webp', tier: 'D' },
+      ],
+    },
+  ])
+})
+
+test('format leaderboard with new uuid', () => {
+  const leaderboard: ServerTierList[] = [
+    {
+      uuid: 'p1',
+      characters: [{ name: 'olympe', slug: 'olympe', image: '/olympe.webp', tier: 'A' }],
+    },
+  ]
+  const entry: ServerTierList = {
+    uuid: 'p2',
+    characters: [{ name: 'mikasa', slug: 'mikasa', image: '/mikasa.webp', tier: 'A' }],
+  }
+  expect(formatLeaderboard(leaderboard, entry)).toEqual([
+    {
+      uuid: 'p1',
+      characters: [{ name: 'olympe', slug: 'olympe', image: '/olympe.webp', tier: 'A' }],
+    },
+    {
+      uuid: 'p2',
+      characters: [{ name: 'mikasa', slug: 'mikasa', image: '/mikasa.webp', tier: 'A' }],
+    },
+  ])
+})
+
+test('format with update', () => {
+  const leaderboard: ServerTierList[] = [
+    {
+      uuid: 'p1',
+      characters: [{ name: 'jean', slug: 'jean', image: '/jean.webp', tier: 'A' }],
+    },
+  ]
+  const entry: ServerTierList = {
+    uuid: 'p1',
+    characters: [{ name: 'louis', slug: 'louis', image: '/louis.webp', tier: 'B' }],
+  }
+  expect(formatLeaderboard(leaderboard, entry)).toEqual([
+    {
+      uuid: 'p1',
+      characters: [{ name: 'louis', slug: 'louis', image: '/louis.webp', tier: 'B' }],
     },
   ])
 })

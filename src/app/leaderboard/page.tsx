@@ -1,23 +1,34 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import WS from '@/components/ws.ts'
+
+// ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+// │                                                                                               │
+// │ Runtime                                                                                       │
+// │                                                                                               │
+// └───────────────────────────────────────────────────────────────────────────────────────────────┘
+
+// ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+// │                                                                                               │
+// │ Component                                                                                     │
+// │                                                                                               │
+// └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
 export default function Home() {
-  const [tierLists, setTierLists] = useState({})
-
-  // useEffect(initWS, [tierLists])
-
-  // Render ----------------------------------------------------------------------------------------
+  const [tierLists, setTierLists]: [ServerTierList[], Function] = useState([])
+  const ws = WS(tierLists, setTierLists, true)
+  ws.sendSubscribe()
 
   return (
     <>
-      {Object.entries(tierLists).map(([uuid, tierList]) => {
+      {tierLists.map((tierList) => {
         return (
-          <section key={uuid}>
-            <h1>{uuid}</h1>
-            {tierList.s.map((s, i) => (
+          <section key={tierList.uuid}>
+            <h1>{tierList.uuid}</h1>
+            {tierList.characters.map((character, i) => (
               <article key={i}>
-                <img src={s.image} />
+                {character.tier === 'A' && <img src={character.image} alt="" />}
               </article>
             ))}
           </section>
@@ -25,44 +36,4 @@ export default function Home() {
       })}
     </>
   )
-
-  // Utils -----------------------------------------------------------------------------------------
-
-  function initWS() {
-    setInterval(() => {
-      console.log(tierLists)
-    }, 2000)
-    const ws = new WebSocket('ws://localhost:8081')
-    const on = {
-      ping: () => {
-        ws.send(JSON.stringify({ cmd: 'listen' }))
-      },
-      listen: () => {},
-      update: ({ uuid, old, tierList }) => {
-        const newTierLists = {}
-        Object.entries(old).map(([id, tl]) => {
-          newTierLists[id] = { ...tl }
-        })
-        newTierLists[uuid] = tierList
-        setTierLists(newTierLists)
-      }
-    }
-
-    ws.addEventListener('open', () => {
-      console.log('WS opened')
-      ws.send(JSON.stringify({ cmd: 'ping' }))
-    })  
-    
-    ws.addEventListener('message', ({ data }) => {
-      try {
-        const { response, uuid, tierList } = JSON.parse(data)
-        on[response]({ uuid, old: tierLists, tierList })
-      }
-      catch (error) {
-        console.error(error)
-      }
-    })
-    
-    ws.addEventListener('close', () => console.log('↑ Closed'))
-  }
 }
