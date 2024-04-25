@@ -17,7 +17,7 @@ export function initFromScratch(names: string[]): Character[] {
 }
 
 export function init(): Character[] {
-  const store = window.localStorage.getItem('store')
+  const store = localStorage.getItem('store')
   try {
     return store ? JSON.parse(store) : initFromScratch(names)
   } catch (error) {

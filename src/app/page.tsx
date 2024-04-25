@@ -14,7 +14,7 @@ import { init } from '@/utils/helpers.ts'
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
-const uuid = window.crypto.randomUUID()
+const uuid = crypto.randomUUID()
 const ws = WS()
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -28,7 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     const data = JSON.stringify(store)
-    window.localStorage.setItem('store', data)
+    localStorage.setItem('store', data)
     ws.sendUpdate({ uuid, characters: store })
   }, [store])
 
