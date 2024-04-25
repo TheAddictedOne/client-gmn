@@ -15,11 +15,18 @@ import { init } from '@/utils/helpers.ts'
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
 export default function Home() {
-  const [store, setStore] = useState(init())
-  const [ws] = useState(WS())
-  const [uuid] = useState(window.crypto.randomUUID())
+  const [store, setStore] = useState()
+  const [ws, setWS] = useState()
+  const [uuid, setUUID] = useState()
 
   useEffect(() => {
+    setStore(init())
+    setWS(WS())
+    setUUID(window.crypto.randomUUID())
+  }, [])
+
+  useEffect(() => {
+    if (!store) return
     const data = JSON.stringify(store)
     window.localStorage.setItem('store', data)
     ws.sendUpdate({ uuid, characters: store })
