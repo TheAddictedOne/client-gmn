@@ -1,6 +1,6 @@
 import { formatLeaderboard } from '@/utils/helpers.ts'
 
-const URL = 'ws://localhost:8081'
+const URL = 'wss://server-gmn.glitch.me/'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
@@ -88,7 +88,7 @@ export default function WS(
   // │                                                                                             │
   // └─────────────────────────────────────────────────────────────────────────────────────────────┘
 
-  const ws = new WebSocket('ws://localhost:8081')
+  const ws = new WebSocket(URL)
 
   ws.addEventListener('open', onConnectionOpened)
   ws.addEventListener('message', onMessageReceived)

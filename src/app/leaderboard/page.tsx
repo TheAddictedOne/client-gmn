@@ -1,13 +1,24 @@
 'use client'
 
+import names from '@/utils/names.json'
 import { useEffect, useState } from 'react'
 import WS from '@/components/ws.ts'
+import css from '@/components/Leaderboard.module.css'
+import { initFromScratch } from '@/utils/helpers.ts'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
 // │ Runtime                                                                                       │
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
+
+const characters = initFromScratch(names).map((character) => {
+  const points = Math.floor(Math.random() * 100)
+  return {
+    ...character,
+    points,
+  }
+})
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
@@ -21,19 +32,23 @@ export default function Home() {
   ws.sendSubscribe()
 
   return (
-    <>
-      {tierLists.map((tierList) => {
+    <main className={css.Main}>
+      {characters.map((character, i) => {
+        const style = {
+          width: `${character.points}0px`,
+        }
+
         return (
-          <section key={tierList.uuid}>
-            <h1>{tierList.uuid}</h1>
-            {tierList.characters.map((character, i) => (
-              <article key={i}>
-                {character.tier === 'A' && <img src={character.image} alt="" />}
-              </article>
-            ))}
+          <section className={css.Section} key={i}>
+            <div className={css.Score} {...{ style }}>
+              {character.points}
+            </div>
+            <div className={css.Image}>
+              <img src={character.image} />
+            </div>
           </section>
         )
       })}
-    </>
+    </main>
   )
 }

@@ -1,0 +1,26 @@
+.Main {
+  display: flex;
+  flex-direction: column;
+}
+
+.Section {
+  display: flex;
+  height: 100px;
+  margin: 10px;
+}
+
+.Section .Score {
+  height: 100%;
+  border: 1px solid black;
+  margin-right: 20px;
+}
+
+.Section .Image {
+  height: 100%;
+  aspect-ratio: 1/1;
+}
+
+.Section img {
+  display: block;
+  height: 100%;
+}

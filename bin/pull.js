@@ -11,10 +11,10 @@ const db = await notion.databases.query({
   database_id: process.env.NOTION_PAGE_ID,
   sorts: [
     {
-      property: "name",
-      direction: "ascending"
-    }
-  ]
+      property: 'name',
+      direction: 'ascending',
+    },
+  ],
   // filter: {
   //   property: "image",
   //   rich_text: {
@@ -23,4 +23,4 @@ const db = await notion.databases.query({
   // }
 })
 const results = db.results.map((result) => result.properties.name.title[0].plain_text)
-Bun.write('./src/app/names.json', JSON.stringify(results, null, 2))
+Bun.write('./src/utils/names.json', JSON.stringify(results, null, 2))
