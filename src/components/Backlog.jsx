@@ -5,6 +5,7 @@ import Character from '@/components/Character.jsx'
 
 const Backlog = () => {
   const [backlog, setBacklog] = useState(names)
+  const [dragName, setDragName] = useState('')
 
   useEffect(() => {
     const item = window.localStorage.getItem('backlog')
@@ -13,17 +14,21 @@ const Backlog = () => {
   }, [])
 
   const onDragStart = (event) => {
-    event.dataTransfer.setData('text/plain', event.target.title)
+    const name = event.target.title
+    setDragName(name)
+    event.dataTransfer.setData('text/plain', name)
   }
   const onDragOver = () => event.preventDefault()
   const onDragEnter = () => event.preventDefault()
-  const onDragLeave = () => event.preventDefault()
+  const onDragLeave = () => {
+    const newBacklog = backlog.filter((name) => name !== dragName)
+    setBacklog(newBacklog)
+  }
   const onDrop = (event) => {
     const title = event.target.title
     const index = backlog.findIndex((name) => name === title)
-    const droppedName = event.dataTransfer.getData('text/plain')
-    const newBacklog = [...backlog].filter((name) => name !== droppedName)
-    newBacklog.splice(index, 0, droppedName)
+    const newBacklog = backlog.filter((name) => name !== dragName)
+    newBacklog.splice(index, 0, dragName)
     setBacklog(newBacklog)
   }
 
