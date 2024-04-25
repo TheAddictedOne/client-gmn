@@ -2,9 +2,9 @@
 
 import names from '@/utils/names.json'
 import { useEffect, useState } from 'react'
-import WS from '@/components/ws.ts'
+import WS from '@/components/ws.js'
 import css from '@/components/Leaderboard.module.css'
-import { initFromScratch } from '@/utils/helpers.ts'
+import { initFromScratch } from '@/utils/helpers.js'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │

@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Character from '@/components/Character.tsx'
-import Characters from '@/components/Characters.tsx'
-import Header from '@/components/Header.tsx'
-import TierList from '@/components/TierList.tsx'
-import WS from '@/components/ws.ts'
-import { init } from '@/utils/helpers.ts'
+import Character from '@/components/Character.jsx'
+import Characters from '@/components/Characters.jsx'
+import Header from '@/components/Header.jsx'
+import TierList from '@/components/TierList.jsx'
+import WS from '@/components/ws.js'
+import { initCharacters } from '@/utils/helpers.js'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
@@ -15,13 +15,12 @@ import { init } from '@/utils/helpers.ts'
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
 export default function Home() {
-  const [store, setStore] = useState()
-  const [ws, setWS] = useState()
+  const ws = WS()
+  const [characters, setCharacters] = useState([])
   const [uuid, setUUID] = useState()
 
   useEffect(() => {
-    setStore(init())
-    setWS(WS())
+    setStore(initCharacters())
     setUUID(window.crypto.randomUUID())
   }, [])
 

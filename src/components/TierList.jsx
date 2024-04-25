@@ -1,6 +1,6 @@
-import Character from '@/components/Character.tsx'
+import Character from '@/components/Character.jsx'
 import css from '@/components/TierList.module.css'
-import { move, reorder } from '@/utils/helpers.ts'
+import { move, reorder } from '@/utils/helpers.js'
 
 export default function TierList({ store, setStore }: TierListParams) {
   function Section({ tier, characters }: SectionParams) {

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { initFromScratch, move, reorder, formatLeaderboard } from '@/utils/helpers.ts'
+import { initFromScratch, move, reorder, formatLeaderboard } from '@/utils/helpers.js'
 
 test('initFromScratch', () => {
   const names = ['maya FEY', 'Aloy', 'amicia de Rune']

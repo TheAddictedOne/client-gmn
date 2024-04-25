@@ -1,4 +1,4 @@
-import { formatLeaderboard } from '@/utils/helpers.ts'
+import { formatLeaderboard } from '@/utils/helpers.js'
 
 const URL = 'wss://server-gmn.glitch.me/'
 
