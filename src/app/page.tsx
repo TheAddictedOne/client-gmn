@@ -10,25 +10,18 @@ import { init } from '@/utils/helpers.ts'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
-// │ Runtime                                                                                       │
-// │                                                                                               │
-// └───────────────────────────────────────────────────────────────────────────────────────────────┘
-
-const uuid = crypto.randomUUID()
-const ws = WS()
-
-// ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-// │                                                                                               │
 // │ Component                                                                                     │
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
 export default function Home() {
   const [store, setStore] = useState(init())
+  const [ws] = useState(WS())
+  const [uuid] = useState(window.crypto.randomUUID())
 
   useEffect(() => {
     const data = JSON.stringify(store)
-    localStorage.setItem('store', data)
+    window.localStorage.setItem('store', data)
     ws.sendUpdate({ uuid, characters: store })
   }, [store])
 
