@@ -6,7 +6,7 @@ import names from '@/utils/names.json'
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
-export function initFromScratch(names: string[]): Character[] {
+export function initFromScratch(names) {
   return names.map((name) => {
     name = name.toLowerCase()
     const slug = name.replaceAll(' ', '-')
@@ -16,7 +16,7 @@ export function initFromScratch(names: string[]): Character[] {
   })
 }
 
-export function init(): Character[] {
+export function initCharacters() {
   const store = window.localStorage.getItem('store')
   try {
     return store ? JSON.parse(store) : initFromScratch(names)
@@ -26,14 +26,14 @@ export function init(): Character[] {
   }
 }
 
-export function move(characters: Character[], slug: string, tier: Tier): Character[] {
+export function move(characters, slug, tier) {
   return characters.map((character) =>
     character.slug === slug ? { ...character, tier } : character
   )
 }
 
-export function reorder(characters: Character[]): Section[] {
-  const store: Section[] = [
+export function reorder(characters) {
+  const store = [
     { tier: 'A', characters: [] },
     { tier: 'B', characters: [] },
     { tier: 'C', characters: [] },
@@ -48,7 +48,7 @@ export function reorder(characters: Character[]): Section[] {
   return store
 }
 
-export function formatLeaderboard(leaderboard: ServerTierList[], entry: ServerTierList) {
+export function formatLeaderboard(leaderboard, entry) {
   if (leaderboard.find((tierList) => tierList.uuid === entry.uuid)) {
     return leaderboard.map((tierList) => {
       return tierList.uuid === entry.uuid ? entry : tierList

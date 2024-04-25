@@ -2,12 +2,12 @@ import css from '@/components/Character.module.css'
 import Image from 'next/image'
 import { move } from '@/utils/helpers.js'
 
-export default function Character({ store, setStore, character }: CharacterParams) {
+export default function Character({ store, setStore, character }) {
   const onClick = () => {
     setStore(move(store, character.slug, 'NONE'))
   }
 
-  const onDragStart = (event: React.DragEvent) => {
+  const onDragStart = (event) => {
     event.dataTransfer.setData('text/plain', character.slug)
   }
 

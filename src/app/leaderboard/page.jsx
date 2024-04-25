@@ -27,7 +27,7 @@ const characters = initFromScratch(names).map((character) => {
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
 export default function Home() {
-  const [tierLists, setTierLists]: [ServerTierList[], Function] = useState([])
+  const [tierLists, setTierLists] = useState([])
   const ws = WS(tierLists, setTierLists, true)
   ws.sendSubscribe()
 

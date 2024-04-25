@@ -17,30 +17,29 @@ import { initCharacters } from '@/utils/helpers.js'
 export default function Home() {
   const ws = WS()
   const [characters, setCharacters] = useState([])
-  const [uuid, setUUID] = useState()
+  const [uuid, setUUID] = useState('')
 
   useEffect(() => {
-    setStore(initCharacters())
+    setCharacters(initCharacters())
     setUUID(window.crypto.randomUUID())
   }, [])
 
   useEffect(() => {
-    if (!store) return
-    const data = JSON.stringify(store)
-    window.localStorage.setItem('store', data)
-    ws.sendUpdate({ uuid, characters: store })
-  }, [store])
+    if (!characters) return
+    window.localStorage.setItem('characters', JSON.stringify(characters))
+    ws.sendUpdate({ uuid, characters })
+  }, [characters])
 
   return (
-    store && (
+    characters && (
       <>
         <Header {...{ uuid }} />
-        <TierList {...{ store, setStore }} />
+        <TierList {...{ characters, setCharacters }} />
         <Characters>
-          {store
+          {characters
             .filter((character) => character.tier === 'NONE')
             .map((character, i) => {
-              return <Character key={i} {...{ store, setStore, character }} />
+              return <Character key={i} {...{ characters, setCharacters, character }} />
             })}
         </Characters>
       </>

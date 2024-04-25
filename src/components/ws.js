@@ -8,11 +8,7 @@ const URL = 'wss://server-gmn.glitch.me/'
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
-export default function WS(
-  tierLists: ServerTierList[] = [],
-  setTierLists: Function = () => {},
-  tosub = false
-) {
+export default function WS(tierLists, setTierLists, tosub = false) {
   console.log('init')
   let isSub = false
 
@@ -27,7 +23,7 @@ export default function WS(
     ws.send(JSON.stringify({ cmd: 'ping' }))
   }
 
-  function sendUpdate({ uuid, characters }: { uuid: string; characters: Character[] }) {
+  function sendUpdate({ uuid, characters }) {
     if (ws.readyState !== 1) return
     ws.send(JSON.stringify({ cmd: 'update', uuid, characters }))
   }
@@ -48,7 +44,7 @@ export default function WS(
     tosub ? sendSubscribe() : sendPing()
   }
 
-  function onMessageReceived({ data }: MessageEvent) {
+  function onMessageReceived({ data }) {
     try {
       const json = JSON.parse(data)
       if (!json.response) {
@@ -66,7 +62,7 @@ export default function WS(
       if (json.response === 'player_update') {
         if (!isSub) return
         console.log('< player_update', json)
-        const oneTierList: ServerTierList = {
+        const oneTierList = {
           uuid: json.uuid,
           characters: json.characters,
         }
