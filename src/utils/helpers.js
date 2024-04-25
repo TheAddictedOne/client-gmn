@@ -56,3 +56,11 @@ export function formatLeaderboard(leaderboard, entry) {
   }
   return [...leaderboard, entry]
 }
+
+export function getUUID(uuid = window.localStorage.getItem('uuid')) {
+  if (!uuid) {
+    uuid = window.crypto.randomUUID()
+    window.localStorage.setItem('uuid', uuid)
+  }
+  return uuid
+}

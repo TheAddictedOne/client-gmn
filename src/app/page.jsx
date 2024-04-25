@@ -6,7 +6,7 @@ import Characters from '@/components/Characters.jsx'
 import Header from '@/components/Header.jsx'
 import TierList from '@/components/TierList.jsx'
 import WS from '@/components/ws.js'
-import { initCharacters } from '@/utils/helpers.js'
+import { initCharacters, getUUID } from '@/utils/helpers.js'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
@@ -17,23 +17,21 @@ import { initCharacters } from '@/utils/helpers.js'
 export default function Home() {
   const ws = WS()
   const [characters, setCharacters] = useState([])
-  const [uuid, setUUID] = useState('')
 
   useEffect(() => {
     setCharacters(initCharacters())
-    setUUID(window.crypto.randomUUID())
   }, [])
 
   useEffect(() => {
     if (!characters) return
     window.localStorage.setItem('characters', JSON.stringify(characters))
-    ws.sendUpdate({ uuid, characters })
+    ws.sendUpdate({ uuid: getUUID(), characters })
   }, [characters])
 
   return (
     characters && (
       <>
-        <Header {...{ uuid }} />
+        <Header />
         <TierList {...{ characters, setCharacters }} />
         <Characters>
           {characters
