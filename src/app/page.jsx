@@ -1,46 +1,26 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Character from '@/components/Character.jsx'
-import Characters from '@/components/Characters.jsx'
+import WS from '@/components/ws.js'
 import Header from '@/components/Header.jsx'
 import TierList from '@/components/TierList.jsx'
-import WS from '@/components/ws.js'
-import { initCharacters, getUUID } from '@/utils/helpers.js'
+import Backlog from '@/components/Backlog.jsx'
 
-// ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-// │                                                                                               │
-// │ Component                                                                                     │
-// │                                                                                               │
-// └───────────────────────────────────────────────────────────────────────────────────────────────┘
-
-export default function Home() {
+const Page = () => {
   const ws = WS()
-  const [characters, setCharacters] = useState([])
 
-  useEffect(() => {
-    setCharacters(initCharacters())
-  }, [])
-
-  useEffect(() => {
-    if (!characters) return
-    window.localStorage.setItem('characters', JSON.stringify(characters))
-    ws.sendUpdate({ uuid: getUUID(), characters })
-  }, [characters])
+  // useEffect(() => {
+  //   if (!backlog) return
+  //   window.localStorage.setItem('backlog', JSON.stringify(backlog))
+  //   ws.sendUpdate({ uuid: getUUID(), backlog })
+  // }, [backlog])
 
   return (
-    characters && (
-      <>
-        <Header />
-        <TierList {...{ characters, setCharacters }} />
-        <Characters>
-          {characters
-            .filter((character) => character.tier === 'NONE')
-            .map((character, i) => {
-              return <Character key={i} {...{ characters, setCharacters, character }} />
-            })}
-        </Characters>
-      </>
-    )
+    <>
+      <Header />
+      <TierList />
+      <Backlog />
+    </>
   )
 }
+
+export default Page

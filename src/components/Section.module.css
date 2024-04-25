@@ -1,13 +1,11 @@
-.TierList {
-  --size: 100px;
-}
-
 .Tier {
+  --size: 100px;
   background: black;
   border: 1px solid black;
   display: flex;
   height: var(--size);
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .Tier header {
@@ -17,7 +15,7 @@
   font-weight: bold;
   height: var(--size);
   justify-content: center;
-  width: var(--size);
+  width: calc(var(--size) * 2);
 }
 
 .Tier article {
@@ -58,16 +56,16 @@
   width: 100%;
 }
 
-.TierS {
+.Tier [data-tier=A] {
   background-color: red;
 }
-.TierA {
+.Tier [data-tier=B] {
   background-color: orange;
 }
-.TierB {
+.Tier [data-tier=C] {
   background-color: yellow;
 }
-.TierC {
+.Tier [data-tier=D] {
   background-color: greenyellow;
 }
 .TierHighlighted {

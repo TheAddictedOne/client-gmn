@@ -6,23 +6,21 @@ import names from '@/utils/names.json'
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
-export function initFromScratch(names) {
-  return names.map((name) => {
-    name = name.toLowerCase()
-    const slug = name.replaceAll(' ', '-')
-    const image = `/${slug}.webp`
-    const tier = 'NONE'
-    return { name, slug, image, tier }
-  })
+export function getSlug(name) {
+  return name.replaceAll(' ', '-').toLowerCase()
 }
 
-export function initCharacters() {
+export function getImage(name) {
+  return `/${getSlug(name)}.webp`
+}
+
+export function getBacklog() {
   const store = window.localStorage.getItem('store')
   try {
-    return store ? JSON.parse(store) : initFromScratch(names)
+    return store ? JSON.parse(store) : names
   } catch (error) {
     console.warn(error)
-    return initFromScratch(names)
+    return names
   }
 }
 
@@ -32,20 +30,20 @@ export function move(characters, slug, tier) {
   )
 }
 
-export function reorder(characters) {
-  const store = [
-    { tier: 'A', characters: [] },
-    { tier: 'B', characters: [] },
-    { tier: 'C', characters: [] },
-    { tier: 'D', characters: [] },
+export function getTiers(characters) {
+  const sections = [
+    { tier: 'A', list: [] },
+    { tier: 'B', list: [] },
+    { tier: 'C', list: [] },
+    { tier: 'D', list: [] },
   ]
   characters.forEach((character) => {
-    if (character.tier === 'A') store[0].characters.push(character)
-    if (character.tier === 'B') store[1].characters.push(character)
-    if (character.tier === 'C') store[2].characters.push(character)
-    if (character.tier === 'D') store[3].characters.push(character)
+    if (character.tier === 'A') store[0].list.push(character)
+    if (character.tier === 'B') store[1].list.push(character)
+    if (character.tier === 'C') store[2].list.push(character)
+    if (character.tier === 'D') store[3].list.push(character)
   })
-  return store
+  return sections
 }
 
 export function formatLeaderboard(leaderboard, entry) {
