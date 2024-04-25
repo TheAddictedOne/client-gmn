@@ -1,8 +1,14 @@
 import css from '@/components/Header.module.css'
 import { useState, useEffect } from 'react'
 
-export default function Header() {
+const Header = () => {
   const [name, setName] = useState('')
+
+  useEffect(() => {
+    const item = window.localStorage.getItem('name')
+    if (!item) return
+    setName(item)
+  }, [])
 
   useEffect(() => {
     window.localStorage.setItem('name', name)
@@ -14,7 +20,9 @@ export default function Header() {
 
   return (
     <header className={css.Header}>
-      <input type="text" placeholder="Nom du joueur" {...{ onChange }} />
+      <input type="text" placeholder="Nom du joueur" {...{ onChange }} value={name} />
     </header>
   )
 }
+
+export default Header
