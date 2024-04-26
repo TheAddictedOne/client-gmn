@@ -70,9 +70,15 @@ export default function WS(tosub = false) {
       })
     })
 
-    return Object.entries(result).map(([name, points]) => {
-      return { name, points }
-    })
+    return Object.entries(result)
+      .map(([name, points]) => {
+        return { name, points }
+      })
+      .sort((a, b) => {
+        if (a.points < b.points) return 1
+        if (a.points > b.points) return -1
+        return 0
+      })
   }
 
   // ┌─────────────────────────────────────────────────────────────────────────────────────────────┐

@@ -15,7 +15,7 @@ const Page = () => {
     <main className={css.Main}>
       {characters.map((character, i) => {
         const style = {
-          width: `${character.points}0px`,
+          width: `${character.points * 3}0px`,
         }
 
         return (
