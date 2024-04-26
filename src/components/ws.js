@@ -8,9 +8,72 @@ const URL = 'wss://server-gmn.glitch.me/'
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
-export default function WS(tierLists, setTierLists, tosub = false) {
-  if (typeof window === 'undefined') return
-  let isSub = false
+export default function WS(tosub = false) {
+  let store = []
+  let callback = () => {}
+
+  if (typeof window === 'undefined') {
+    return {
+      setCallback: () => {},
+      sendPing: () => {},
+      sendUpdate: () => {},
+      sendSubscribe: () => {},
+    }
+  }
+
+  function setCallback(cb) {
+    callback = cb
+  }
+
+  function updateStore(payload) {
+    const uuids = store.map((current) => current.uuid)
+    if (uuids.includes(payload.uuid)) {
+      return store.map((current) => {
+        return current.uuid === payload.uuid ? payload : current
+      })
+    }
+
+    return [...store, payload]
+  }
+
+  function reorder() {
+    const result = {}
+
+    store.forEach((payload) => {
+      payload.A.forEach((name) => {
+        if (result[name]) {
+          result[name] += 4
+        } else {
+          result[name] = 4
+        }
+      })
+      payload.B.forEach((name) => {
+        if (result[name]) {
+          result[name] += 3
+        } else {
+          result[name] = 3
+        }
+      })
+      payload.C.forEach((name) => {
+        if (result[name]) {
+          result[name] += 2
+        } else {
+          result[name] = 2
+        }
+      })
+      payload.D.forEach((name) => {
+        if (result[name]) {
+          result[name] += 1
+        } else {
+          result[name] = 1
+        }
+      })
+    })
+
+    return Object.entries(result).map(([name, points]) => {
+      return { name, points }
+    })
+  }
 
   // ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
   // │                                                                                             │
@@ -20,16 +83,19 @@ export default function WS(tierLists, setTierLists, tosub = false) {
 
   function sendPing() {
     if (ws.readyState !== 1) return
+    console.log('> ping')
     ws.send(JSON.stringify({ cmd: 'ping' }))
   }
 
-  function sendUpdate({ uuid, characters }) {
+  function sendUpdate(payload) {
     if (ws.readyState !== 1) return
-    ws.send(JSON.stringify({ cmd: 'update', uuid, characters }))
+    console.log('> update')
+    ws.send(JSON.stringify({ cmd: 'update', payload }))
   }
 
   function sendSubscribe() {
     if (ws.readyState !== 1) return
+    console.log('> subscribe')
     ws.send(JSON.stringify({ cmd: 'subscribe' }))
   }
 
@@ -56,18 +122,16 @@ export default function WS(tierLists, setTierLists, tosub = false) {
       }
       if (json.response === 'subscribe') {
         console.log('< subscribe')
-        isSub = true
         return
       }
       if (json.response === 'player_update') {
-        if (!isSub) return
+        if (!tosub) return
         console.log('< player_update', json)
-        const oneTierList = {
-          uuid: json.uuid,
-          characters: json.characters,
-        }
-        const newTierLists = formatLeaderboard(tierLists, oneTierList)
-        setTierLists(newTierLists)
+        store = updateStore(json.payload)
+        console.log('new store', store)
+        const chars = reorder(store)
+        console.log('chars', chars)
+        callback(chars)
       }
     } catch (error) {
       console.warn(error)
@@ -90,5 +154,5 @@ export default function WS(tierLists, setTierLists, tosub = false) {
   ws.addEventListener('message', onMessageReceived)
   ws.addEventListener('close', onConnectionClosed)
 
-  return { sendPing, sendUpdate, sendSubscribe }
+  return { setCallback, sendPing, sendUpdate, sendSubscribe }
 }

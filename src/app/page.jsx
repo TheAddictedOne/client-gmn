@@ -7,8 +7,9 @@ import Backlog from '@/components/Backlog.jsx'
 import { getItem, setItem, getUUID } from '@/utils/helpers.js'
 import { useEffect, useState } from 'react'
 
+const ws = WS()
+
 const Page = () => {
-  const ws = WS()
   const uuid = getUUID()
   const [tierA, setTierA] = useState(getItem('A'))
   const [tierB, setTierB] = useState(getItem('B'))
@@ -46,6 +47,13 @@ const Page = () => {
     const destinationList = [...lists[destination], name]
     setters[destination](destinationList)
     setItem(destination, destinationList)
+    ws.sendUpdate({
+      uuid: getUUID(),
+      A: getItem('A'),
+      B: getItem('B'),
+      C: getItem('C'),
+      D: getItem('D'),
+    })
 
     setDragElement({ name: null, source: null, destination: null })
   }, [dragElement])
@@ -54,12 +62,6 @@ const Page = () => {
     dragElement,
     setDragElement,
   }
-
-  // useEffect(() => {
-  //   if (!backlog) return
-  //   window.localStorage.setItem('backlog', JSON.stringify(backlog))
-  //   ws.sendUpdate({ uuid: getUUID(), backlog })
-  // }, [backlog])
 
   return (
     <>
