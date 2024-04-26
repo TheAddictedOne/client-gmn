@@ -4,7 +4,6 @@ import names from '@/utils/names.json'
 import { useEffect, useState } from 'react'
 import WS from '@/components/ws.js'
 import css from '@/components/Leaderboard.module.css'
-import { initFromScratch } from '@/utils/helpers.js'
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
@@ -12,13 +11,13 @@ import { initFromScratch } from '@/utils/helpers.js'
 // │                                                                                               │
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
-const characters = initFromScratch(names).map((character) => {
-  const points = Math.floor(Math.random() * 100)
-  return {
-    ...character,
-    points,
-  }
-})
+// const characters = initFromScratch(names).map((character) => {
+//   const points = Math.floor(Math.random() * 100)
+//   return {
+//     ...character,
+//     points,
+//   }
+// })
 
 // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 // │                                                                                               │
