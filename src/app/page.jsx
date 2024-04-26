@@ -4,7 +4,7 @@ import WS from '@/components/ws.js'
 import Header from '@/components/Header.jsx'
 import Section from '@/components/Section.jsx'
 import Backlog from '@/components/Backlog.jsx'
-import { getItem, getUUID } from '@/utils/helpers.js'
+import { getItem, setItem, getUUID } from '@/utils/helpers.js'
 import { useEffect, useState } from 'react'
 
 const Page = () => {
@@ -38,8 +38,14 @@ const Page = () => {
       D: setTierD,
       Backlog: setBacklog,
     }
-    setters[source](lists[source].filter((current) => current !== name))
-    setters[destination]([...lists[destination], name])
+
+    const sourceList = lists[source].filter((current) => current !== name)
+    setters[source](sourceList)
+    setItem(source, sourceList)
+
+    const destinationList = [...lists[destination], name]
+    setters[destination](destinationList)
+    setItem(destination, destinationList)
 
     setDragElement({ name: null, source: null, destination: null })
   }, [dragElement])

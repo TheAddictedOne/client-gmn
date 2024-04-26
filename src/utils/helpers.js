@@ -21,8 +21,8 @@ export function getItem(key) {
   return !!list ? JSON.parse(list) : defaultList
 }
 
-export function setItem(key) {
-  window.localStorage.setItem(key, JSON.stringify(key))
+export function setItem(key, value) {
+  window.localStorage.setItem(key, JSON.stringify(value))
 }
 
 export function getUUID() {
