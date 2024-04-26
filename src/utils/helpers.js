@@ -14,14 +14,27 @@ export function getImage(name) {
   return `/${getSlug(name)}.webp`
 }
 
-export function getBacklog() {
-  const store = window.localStorage.getItem('store')
-  try {
-    return store ? JSON.parse(store) : names
-  } catch (error) {
-    console.warn(error)
-    return names
-  }
+export function getItem(key) {
+  if (!window) return []
+  const defaultList = key === 'Backlog' ? names : []
+  const list = window.localStorage.getItem(key)
+  return !!list ? JSON.parse(list) : defaultList
+}
+
+export function setItem(key) {
+  window.localStorage.setItem(key, JSON.stringify(key))
+}
+
+export function getUUID() {
+  if (!window) return ''
+  const uuid = window.localStorage.getItem('uuid')
+  return !!uuid ? uuid : window.crypto.randomUUID()
+}
+
+export function getUsername() {
+  if (!window) return ''
+  const username = window.localStorage.getItem('username')
+  return !!username ? username : ''
 }
 
 export function move(characters, slug, tier) {
@@ -53,12 +66,4 @@ export function formatLeaderboard(leaderboard, entry) {
     })
   }
   return [...leaderboard, entry]
-}
-
-export function getUUID(uuid = window.localStorage.getItem('uuid')) {
-  if (!uuid) {
-    uuid = window.crypto.randomUUID()
-    window.localStorage.setItem('uuid', uuid)
-  }
-  return uuid
 }

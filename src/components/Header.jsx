@@ -1,26 +1,21 @@
 import css from '@/components/Header.module.css'
 import { useState, useEffect } from 'react'
+import { getUsername } from '@/utils/helpers.js'
 
 const Header = () => {
-  const [name, setName] = useState('')
+  const [username, setUsername] = useState(getUsername())
 
   useEffect(() => {
-    const item = window.localStorage.getItem('name')
-    if (!item) return
-    setName(item)
-  }, [])
-
-  useEffect(() => {
-    window.localStorage.setItem('name', name)
-  }, [name])
+    window.localStorage.setItem('username', username)
+  }, [username])
 
   const onChange = (event) => {
-    setName(event.currentTarget.value)
+    setUsername(event.currentTarget.value)
   }
 
   return (
     <header className={css.Header}>
-      <input type="text" placeholder="Nom du joueur" {...{ onChange }} value={name} />
+      <input type="text" placeholder="Nom du joueur" {...{ onChange }} value={username} />
     </header>
   )
 }

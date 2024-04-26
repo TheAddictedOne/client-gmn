@@ -2,34 +2,25 @@ import names from '@/utils/names.json'
 import { useEffect, useState } from 'react'
 import css from '@/components/Backlog.module.css'
 import Character from '@/components/Character.jsx'
+import { updateBacklog } from '@/utils/helpers.js'
 
-const Backlog = () => {
-  const [backlog, setBacklog] = useState(names)
-  const [dragName, setDragName] = useState('')
-
-  useEffect(() => {
-    const item = window.localStorage.getItem('backlog')
-    if (!item) return
-    setBacklog(JSON.parse(item))
-  }, [])
-
-  const onDragStart = (event) => {
-    const name = event.target.title
-    setDragName(name)
-    event.dataTransfer.setData('text/plain', name)
+const Backlog = ({ source, list, setList, dragElement, setDragElement }) => {
+  const onDragStart = ({ target }) => {
+    setDragElement({
+      ...dragElement,
+      name: target.title,
+      source,
+    })
   }
-  const onDragOver = () => event.preventDefault()
-  const onDragEnter = () => event.preventDefault()
-  const onDragLeave = () => {
-    const newBacklog = backlog.filter((name) => name !== dragName)
-    setBacklog(newBacklog)
-  }
-  const onDrop = (event) => {
-    const title = event.target.title
-    const index = backlog.findIndex((name) => name === title)
-    const newBacklog = backlog.filter((name) => name !== dragName)
-    newBacklog.splice(index, 0, dragName)
-    setBacklog(newBacklog)
+  const onDragOver = (event) => event.preventDefault()
+  const onDragEnter = (event) => event.preventDefault()
+  const onDragLeave = (event) => event.preventDefault()
+  const onDrop = ({ target }) => {
+    // const index = list.findIndex((name) => name === target.title)
+    setDragElement({
+      ...dragElement,
+      destination: source,
+    })
   }
 
   return (
@@ -37,7 +28,7 @@ const Backlog = () => {
       className={css.Backlog}
       {...{ onDragStart, onDragOver, onDragEnter, onDragLeave, onDrop }}
     >
-      {backlog.map((name, i) => (
+      {list.map((name, i) => (
         <Character key={i} {...{ name }} />
       ))}
     </section>

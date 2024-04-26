@@ -28,28 +28,6 @@
   width: var(--size);
 }
 
-.Tier article::after {
-  align-items: center;
-  background-color: #000a;
-  color: white;
-  content: '✘';
-  cursor: pointer;
-  display: flex;
-  font-size: 60px;
-  opacity: 0;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  transition: opacity .4s ease;
-}
-
-.Tier article:hover::after {
-  opacity: 1;
-}
-
 .Tier article img {
   display: block;
   height: 100%;

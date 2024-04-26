@@ -1,29 +1,25 @@
 import { useEffect, useState } from 'react'
 import css from '@/components/Section.module.css'
 import Character from '@/components/Character.jsx'
+import { updateTier } from '@/utils/helpers.js'
 
-const Section = ({ tier, title }) => {
-  const [names, setNames] = useState([])
-
-  useEffect(() => {
-    const list = window.localStorage.getItem(tier)
-    if (!list) return
-    setNames(JSON.parse(list))
-  }, [])
-
-  const onDrop = (event) => {
-    console.log('DROP')
-    event.preventDefault()
-    const name = event.dataTransfer.getData('text/plain')
-    event.currentTarget.classList.remove(css.TierHighlighted)
-    const newNames = [...names, name]
-    setNames(newNames)
-    window.localStorage.setItem(tier, JSON.stringify(newNames))
+const Section = ({ source, title, list, setList, dragElement, setDragElement }) => {
+  const onDragStart = ({ target }) => {
+    setDragElement({
+      ...dragElement,
+      name: target.title,
+      source,
+    })
+  }
+  const onDrop = ({ currentTarget }) => {
+    currentTarget.classList.remove(css.TierHighlighted)
+    setDragElement({
+      ...dragElement,
+      destination: source,
+    })
   }
 
-  const onDragOver = (event) => {
-    event.preventDefault()
-  }
+  const onDragOver = (event) => event.preventDefault()
 
   const onDragEnter = (event) => {
     event.currentTarget.classList.add(css.TierHighlighted)
@@ -34,11 +30,15 @@ const Section = ({ tier, title }) => {
   }
 
   return (
-    <section className={css.Tier} {...{ onDrop, onDragOver, onDragEnter, onDragLeave }}>
-      <header data-tier={tier}>{title}</header>
-      {names.map((name, i) => (
-        <Character key={i} {...{ name }} />
-      ))}
+    <section
+      className={css.Tier}
+      {...{ onDragStart, onDrop, onDragOver, onDragEnter, onDragLeave }}
+    >
+      <header data-tier={source}>{title}</header>
+      {list.map((name, i) => {
+        console.log(name)
+        return <Character key={i} {...{ name }} />
+      })}
     </section>
   )
 }

@@ -26,12 +26,3 @@
 .Character:hover::after {
   opacity: 1;
 }
-
-
-.Character img {
-  transition: transform .4s ease;
-}
-
-.Character:hover img {
-  transform: scale(1.1);
-}
