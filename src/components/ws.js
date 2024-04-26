@@ -9,7 +9,7 @@ const URL = 'wss://server-gmn.glitch.me/'
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
 export default function WS(tierLists, setTierLists, tosub = false) {
-  console.log('init')
+  if (typeof window === 'undefined') return
   let isSub = false
 
   // ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
