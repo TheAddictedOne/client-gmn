@@ -27,8 +27,12 @@ export function setItem(key, value) {
 
 export function getUUID() {
   if (!window) return ''
-  const uuid = window.localStorage.getItem('uuid')
-  return !!uuid ? uuid : window.crypto.randomUUID()
+  let uuid = window.localStorage.getItem('uuid')
+  if (!uuid) {
+    uuid = window.crypto.randomUUID()
+    window.localStorage.setItem('uuid', uuid)
+  }
+  return uuid
 }
 
 export function getUsername() {
