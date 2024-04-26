@@ -36,7 +36,6 @@ const Section = ({ source, title, list, setList, dragElement, setDragElement }) 
     >
       <header data-tier={source}>{title}</header>
       {list.map((name, i) => {
-        console.log(name)
         return <Character key={i} {...{ name }} />
       })}
     </section>

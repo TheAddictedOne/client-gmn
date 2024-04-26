@@ -1,4 +1,6 @@
 .Backlog {  
   display: flex;
   flex-wrap: wrap;
+  height: calc(100vh - 500px);
+  overflow-y: scroll;
 }
