@@ -9,7 +9,8 @@
     "test": "vitest",
     "lint": "next lint",
     "bin:discover": "bun ./bin/discover.js",
-    "bin:pull": "bun ./bin/pull.js"
+    "bin:pull": "bun ./bin/pull.js",
+    "bin:post": "bun ./bin/post.js"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
