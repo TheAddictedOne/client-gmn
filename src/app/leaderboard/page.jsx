@@ -26,28 +26,29 @@ import css from '@/components/Leaderboard.module.css'
 // └───────────────────────────────────────────────────────────────────────────────────────────────┘
 
 export default function Home() {
-  const [tierLists, setTierLists] = useState([])
-  const ws = WS(tierLists, setTierLists, true)
-  ws.sendSubscribe()
+  return 'OK'
+  // const [tierLists, setTierLists] = useState([])
+  // const ws = WS(tierLists, setTierLists, true)
+  // ws.sendSubscribe()
 
-  return (
-    <main className={css.Main}>
-      {characters.map((character, i) => {
-        const style = {
-          width: `${character.points}0px`,
-        }
+  // return (
+  //   <main className={css.Main}>
+  //     {characters.map((character, i) => {
+  //       const style = {
+  //         width: `${character.points}0px`,
+  //       }
 
-        return (
-          <section className={css.Section} key={i}>
-            <div className={css.Score} {...{ style }}>
-              {character.points}
-            </div>
-            <div className={css.Image}>
-              <img src={character.image} />
-            </div>
-          </section>
-        )
-      })}
-    </main>
-  )
+  //       return (
+  //         <section className={css.Section} key={i}>
+  //           <div className={css.Score} {...{ style }}>
+  //             {character.points}
+  //           </div>
+  //           <div className={css.Image}>
+  //             <img src={character.image} />
+  //           </div>
+  //         </section>
+  //       )
+  //     })}
+  //   </main>
+  // )
 }
