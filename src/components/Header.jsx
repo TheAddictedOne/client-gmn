@@ -6,7 +6,7 @@ const Header = () => {
   const [username, setUsername] = useState(getUsername())
 
   useEffect(() => {
-    if (!window) return
+    if (typeof window === 'undefined') return
     window.localStorage.setItem('username', username)
   }, [username])
 

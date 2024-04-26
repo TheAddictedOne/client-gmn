@@ -15,7 +15,7 @@ export function getImage(name) {
 }
 
 export function getItem(key) {
-  if (!window) return []
+  if (typeof window === 'undefined') return []
   const defaultList = key === 'Backlog' ? names : []
   const list = window.localStorage.getItem(key)
   return !!list ? JSON.parse(list) : defaultList
@@ -26,7 +26,7 @@ export function setItem(key, value) {
 }
 
 export function getUUID() {
-  if (!window) return ''
+  if (typeof window === 'undefined') return ''
   let uuid = window.localStorage.getItem('uuid')
   if (!uuid) {
     uuid = window.crypto.randomUUID()
@@ -36,7 +36,7 @@ export function getUUID() {
 }
 
 export function getUsername() {
-  if (!window) return ''
+  if (typeof window === 'undefined') return ''
   const username = window.localStorage.getItem('username')
   return !!username ? username : ''
 }
