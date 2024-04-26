@@ -10,3 +10,9 @@ h1 {
   margin: 0;
   padding: 0;
 }
+
+.TierList {
+  height: 400px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}

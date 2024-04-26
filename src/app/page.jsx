@@ -64,7 +64,7 @@ const Page = () => {
   return (
     <>
       <Header />
-      <div>
+      <div className="TierList">
         <Section source="A" title="Fort probable" {...props} list={tierA} setList={setTierA} />
         <Section source="B" title="Envisageable" {...props} list={tierB} setList={setTierB} />
         <Section source="C" title="Mouais" {...props} list={tierC} setList={setTierC} />
