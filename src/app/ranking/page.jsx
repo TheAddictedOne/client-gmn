@@ -62,7 +62,7 @@ const Page = () => {
               <td title="Envisageable">Total de B ({points.B} points)</td>
               <td title="Mouais">Total de C ({points.C} points)</td>
               <td title="Hors de question !">Total de D ({points.D} points)</td>
-              <td title="Hors de question !">Bonus</td>
+              <td>Bonus</td>
               <td>Total</td>
             </tr>
           </thead>
