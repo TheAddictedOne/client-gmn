@@ -23,9 +23,9 @@ function getEmoji(i, name) {
 
 const Page = () => {
   const [loading, setLoading] = useState(true)
+  const [characters, setCharacters] = useState([])
   const [scores, setScores] = useState([])
-  const [multipliers, setMultipliers] = useState([])
-  const [points, setPoints] = useState([])
+  const [table, setTable] = useState([])
   const tiers = [
     { name: 'Fort probable', characters: getItem('A') },
     { name: 'Envisageable', characters: getItem('B') },
@@ -38,9 +38,9 @@ const Page = () => {
       .then((data) => data.json())
       .then((json) => {
         setLoading(false)
+        setCharacters(json.characters)
         setScores(json.scores)
-        setMultipliers(json.multipliers)
-        setPoints(json.points)
+        setTable(json.table)
       })
   }, [])
 
@@ -78,18 +78,20 @@ const Page = () => {
 
       <section className={css.Box}>
         <h1 className={css.Title}>Multiplicateurs</h1>
-        {multipliers.map((multiplier, i) => {
-          return (
-            <div key={i} className={css.Multiplier}>
-              <div className={css.MultiplierImage} title={multiplier.name}>
-                <Image src={getImage(multiplier.name)} width={400} height={400} alt="" />
+        {characters
+          .filter(({ multiplier }) => multiplier > 1)
+          .map((character, i) => {
+            return (
+              <div key={i} className={css.Multiplier}>
+                <div className={css.MultiplierImage} title={character.name}>
+                  <Image src={getImage(character.name)} width={400} height={400} alt="" />
+                </div>
+                <div>
+                  Multiplicateur x{character.multiplier} ({character.why})
+                </div>
               </div>
-              <div>
-                Multiplicateur x{multiplier.multiplier} ({multiplier.why})
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
       </section>
 
       <section className={css.Box}>
@@ -105,14 +107,14 @@ const Page = () => {
             </tr>
           </thead>
           <tbody>
-            {points.map((p, i) => {
+            {table.map((row, i) => {
               return (
                 <tr key={i}>
-                  <td title={p.name}>{p.name}</td>
-                  <td>{p.A}</td>
-                  <td>{p.B}</td>
-                  <td>{p.C}</td>
-                  <td>{p.D}</td>
+                  <td title={row.name}>{row.name}</td>
+                  <td>{row.A}</td>
+                  <td>{row.B}</td>
+                  <td>{row.C}</td>
+                  <td>{row.D}</td>
                 </tr>
               )
             })}
