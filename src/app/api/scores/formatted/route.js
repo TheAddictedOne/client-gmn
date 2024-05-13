@@ -104,7 +104,7 @@ export async function GET() {
   const bonus = [
     { name: 'Nova', points: 1000, why: '1er prénom' },
     { name: 'Solanum', points: 500, why: '2nd prénom' },
-    { name: 'Jessie', points: 300, why: 'Une de mes ex 🤯' },
+    { name: 'Jessie', points: 300, why: 'La pire de mes ex 🤯' },
   ]
 
   return Response.json({ characters, scores, points, bonus })
