@@ -17,11 +17,19 @@ const Page = () => {
       })
   }, [])
 
-  const getEmoji = (i) => {
+  const getEmoji = (i, name) => {
     if (i === 0) return '/platinum.png'
     if (i === 1) return '/gold.png'
     if (i === 2) return '/silver.png'
     if (i === 3) return '/bronze.png'
+    if (name === 'clem') return '/clem.jpg'
+    if (name === 'johan p') return '/jojo.jpg'
+    if (name === 'jérémy') return '/jeje.png'
+    if (name === 'fra') return '/fra.png'
+    if (name === 'cycymomo') return '/cycy.gif'
+    if (name === 'judith') return '/judith.png'
+    if (name === 'yoyo') return '/yoyo.gif'
+    if (name === 'oce') return '/oce.png'
     return '/happycry.png'
   }
 
@@ -34,7 +42,7 @@ const Page = () => {
             return (
               <li key={i} data-ranking={i} className={css.HeaderListItem}>
                 <div className={css.HeaderListItemEmoji}>
-                  <Image src={getEmoji(i)} width={128} height={128} alt="" />
+                  <Image src={getEmoji(i, name.toLowerCase())} width={128} height={128} alt="" />
                 </div>
                 <div>{name}</div>
                 <div>{score} points</div>
