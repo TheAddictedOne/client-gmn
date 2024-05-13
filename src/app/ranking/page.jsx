@@ -5,10 +5,27 @@ import css from '@/app/ranking/Ranking.module.css'
 import { getImage } from '@/utils/helpers.js'
 import Image from 'next/image'
 
+function getEmoji(i, name) {
+  if (i === 0) return '/platinum.png'
+  if (i === 1) return '/gold.png'
+  if (i === 2) return '/silver.png'
+  if (i === 3) return '/bronze.png'
+  if (name === 'clem') return '/clem.jpg'
+  if (name === 'johan p') return '/jojo.jpg'
+  if (name === 'jérémy') return '/jeje.png'
+  if (name === 'fra') return '/fra.png'
+  if (name === 'cycymomo') return '/cycy.gif'
+  if (name === 'judith') return '/judith.png'
+  if (name === 'yoyo') return '/yoyo.gif'
+  if (name === 'oce') return '/oce.png'
+  return '/happycry.png'
+}
+
 const Page = () => {
   const [users, setUsers] = useState([])
   const [characters, setCharacters] = useState([])
-  const [specialRules, setSpecialRules] = useState([])
+  const [multipliers, setMultipliers] = useState([])
+  const [points, setPoints] = useState([])
 
   useEffect(() => {
     fetch('/api/scores/formatted')
@@ -16,25 +33,10 @@ const Page = () => {
       .then((json) => {
         setUsers(json.users)
         setCharacters(json.characters)
-        setSpecialRules(json.specialRules)
+        setMultipliers(json.multipliers)
+        setPoints(json.points)
       })
   }, [])
-
-  const getEmoji = (i, name) => {
-    if (i === 0) return '/platinum.png'
-    if (i === 1) return '/gold.png'
-    if (i === 2) return '/silver.png'
-    if (i === 3) return '/bronze.png'
-    if (name === 'clem') return '/clem.jpg'
-    if (name === 'johan p') return '/jojo.jpg'
-    if (name === 'jérémy') return '/jeje.png'
-    if (name === 'fra') return '/fra.png'
-    if (name === 'cycymomo') return '/cycy.gif'
-    if (name === 'judith') return '/judith.png'
-    if (name === 'yoyo') return '/yoyo.gif'
-    if (name === 'oce') return '/oce.png'
-    return '/happycry.png'
-  }
 
   return (
     <>
@@ -57,39 +59,46 @@ const Page = () => {
 
       <section className={css.Box}>
         <h1 className={css.Title}>Multiplicateurs</h1>
-        {specialRules.map((rule, i) => {
+        {multipliers.map((multiplier, i) => {
           return (
-            <div key={i} className={css.SpecialRule}>
-              <div className={css.SpecialImage} title={rule.name}>
-                <Image src={getImage(rule.name)} width={400} height={400} alt="" />
+            <div key={i} className={css.Multiplier}>
+              <div className={css.MultiplierImage} title={multiplier.name}>
+                <Image src={getImage(multiplier.name)} width={400} height={400} alt="" />
               </div>
               <div>
-                Multiplicateur x{rule.multiplier} ({rule.why})
+                Multiplicateur x{multiplier.multiplier} ({multiplier.why})
               </div>
             </div>
           )
         })}
       </section>
 
-      <section className={css.Details}>
-        <div className={css.Header}>
-          <div className={css.Name}>Name</div>
-          <div className={css.A}>A</div>
-          <div className={css.B}>B</div>
-          <div className={css.C}>C</div>
-          <div className={css.D}>D</div>
-        </div>
-        {characters.map((character, i) => {
-          return (
-            <div key={i} className={css.Row}>
-              <img src={getImage(character.name)} />
-              <div>{character.A}</div>
-              <div>{character.B}</div>
-              <div>{character.C}</div>
-              <div>{character.D}</div>
-            </div>
-          )
-        })}
+      <section className={css.Box}>
+        <h1 className={css.Title}>Points en fonction du classement</h1>
+        <table className={css.Table}>
+          <thead>
+            <tr>
+              <td>Tier</td>
+              <td>Tier A</td>
+              <td>Tier B</td>
+              <td>Tier C</td>
+              <td>Tier D</td>
+            </tr>
+          </thead>
+          <tbody>
+            {points.map((p, i) => {
+              return (
+                <tr key={i}>
+                  <td title={p.name}>{p.name}</td>
+                  <td>{p.A}</td>
+                  <td>{p.B}</td>
+                  <td>{p.C}</td>
+                  <td>{p.D}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </section>
     </>
   )

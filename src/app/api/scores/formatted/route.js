@@ -29,19 +29,19 @@ export async function GET(res) {
     }
   })
 
-  const specialRules = [
+  const multipliers = [
     { name: 'Nova', multiplier: 3, why: '1er prénom' },
     { name: 'Solanum', multiplier: 2, why: '2nd prénom' },
     { name: 'Jessie', multiplier: 2, why: 'Une de mes ex 🤯' },
     { name: 'Top1', multiplier: 2, why: 'Votre top pick' },
   ]
 
-  const rules = {
-    'Fort probable': { A: 5, B: 3, C: 0, D: -2 },
-    Envisageable: { A: 2, B: 4, C: 1, D: -1 },
-    Mouais: { A: 0, B: 1, C: 2, D: 1 },
-    'Hors de question !': { A: -2, B: -1, C: 1, D: 3 },
-  }
+  const points = [
+    { name: 'Fort probable', A: 5, B: 3, C: 0, D: -2 },
+    { name: 'Envisageable', A: 2, B: 4, C: 1, D: -1 },
+    { name: 'Mouais', A: 0, B: 1, C: 2, D: 1 },
+    { name: 'Hors de question !', A: -2, B: -1, C: 1, D: 3 },
+  ]
 
   const friendsClient = new Client({ auth: process.env.GMN_KEY })
   const friendsDB = await friendsClient.databases.query({
@@ -81,7 +81,7 @@ export async function GET(res) {
       return 0
     })
 
-  return Response.json({ users, characters, specialRules })
+  return Response.json({ users, characters, multipliers, points })
 
   function getTotal() {
     const totals = []

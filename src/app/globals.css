@@ -11,6 +11,28 @@ h1, ul, li {
   padding: 0;
 }
 
+table {
+border-collapse: collapse;
+}
+thead {
+  font-weight: bold;
+  font-size: 20px;
+  background-color: black;
+  color: white;
+}
+thead td {
+  border-color: white;
+}
+td:first-child {
+
+  font-weight: bold;
+}
+td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
 .TierList {
   height: 400px;
   overflow-x: hidden;
