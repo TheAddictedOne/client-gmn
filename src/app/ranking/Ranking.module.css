@@ -127,8 +127,8 @@
  **/
 
 .Tier {
-  height: 100px;
   display: flex;
+  background-color: black;
   flex-wrap: wrap;
 }
 .TierTitle {
@@ -136,6 +136,7 @@
   align-items: center;
   justify-content: center;
   width: 200px;
+  height: 100px;
 }
 .TierImage::before {
   content: attr(title);

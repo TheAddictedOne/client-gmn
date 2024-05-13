@@ -22,7 +22,7 @@ async function getCharacters() {
 
     const character = { name, A, B, C, D, multiplier: 1 }
 
-    if (name === 'Nova') return { ...character, multiplier: 5, why: '1er prénom' }
+    if (name === 'Nova') return { ...character, multiplier: 10, why: '1er prénom' }
     if (name === 'Solanum') return { ...character, multiplier: 3, why: '2nd prénom' }
     if (name === 'Jessie') return { ...character, multiplier: 3, why: 'Une de mes ex 🤯' }
 
@@ -38,9 +38,9 @@ async function getFriends() {
     return {
       name: result.properties.name.rich_text[0].plain_text,
       A: result.properties.A.multi_select.map(({ name }) => name),
-      B: result.properties.A.multi_select.map(({ name }) => name),
-      C: result.properties.A.multi_select.map(({ name }) => name),
-      D: result.properties.A.multi_select.map(({ name }) => name),
+      B: result.properties.B.multi_select.map(({ name }) => name),
+      C: result.properties.C.multi_select.map(({ name }) => name),
+      D: result.properties.D.multi_select.map(({ name }) => name),
     }
   })
 }
@@ -81,5 +81,5 @@ export async function GET() {
   const friends = await getFriends()
   const scores = computeScores(characters, friends)
 
-  return Response.json({ characters, scores, table })
+  return Response.json({ characters, friends, scores, table })
 }

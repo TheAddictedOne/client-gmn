@@ -18,6 +18,7 @@ function getEmoji(i, name) {
   if (name === 'judith') return '/judith.png'
   if (name === 'yoyo') return '/yoyo.gif'
   if (name === 'oce') return '/oce.png'
+  if (name === 'david-qa') return '/david-qa.png'
   return '/happycry.png'
 }
 
@@ -27,10 +28,10 @@ const Page = () => {
   const [scores, setScores] = useState([])
   const [table, setTable] = useState([])
   const tiers = [
-    { name: 'Fort probable', characters: getItem('A') },
-    { name: 'Envisageable', characters: getItem('B') },
-    { name: 'Mouais', characters: getItem('C') },
-    { name: 'Hors de question !', characters: getItem('D') },
+    { name: 'Fort probable', category: 'A', characters: getItem('A') },
+    { name: 'Envisageable', category: 'B', characters: getItem('B') },
+    { name: 'Mouais', category: 'C', characters: getItem('C') },
+    { name: 'Hors de question !', category: 'D', characters: getItem('D') },
   ]
 
   useEffect(() => {
@@ -131,8 +132,11 @@ const Page = () => {
                 {tier.name}
               </div>
               {tier.characters.map((name, j) => {
+                const character = characters.find((c) => c.name === name)
+                const points = character[tier.category] * character.multiplier
+
                 return (
-                  <div key={j} title={name} className={css.TierImage} data-points="100">
+                  <div key={j} title={name} className={css.TierImage} data-points={points}>
                     <Image src={getImage(name)} width={400} height={400} alt="" />
                   </div>
                 )
