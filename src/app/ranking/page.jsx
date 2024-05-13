@@ -17,7 +17,7 @@ function getEmoji(i, name) {
   if (name === 'cycymomo') return '/cycy.gif'
   if (name === 'judith') return '/judith.png'
   if (name === 'yoyo') return '/yoyo.gif'
-  if (name === 'oce') return '/oce.png'
+  if (name === 'oceane') return '/oce.png'
   if (name === 'david-qa') return '/david-qa.png'
   return '/happycry.png'
 }
@@ -26,13 +26,8 @@ const Page = () => {
   const [loading, setLoading] = useState(true)
   const [characters, setCharacters] = useState([])
   const [scores, setScores] = useState([])
-  const [table, setTable] = useState([])
-  const tiers = [
-    { name: 'Fort probable', category: 'A', characters: getItem('A') },
-    { name: 'Envisageable', category: 'B', characters: getItem('B') },
-    { name: 'Mouais', category: 'C', characters: getItem('C') },
-    { name: 'Hors de question !', category: 'D', characters: getItem('D') },
-  ]
+  const [points, setPoints] = useState({})
+  const [bonus, setBonus] = useState([])
 
   useEffect(() => {
     fetch('/api/scores/formatted')
@@ -41,7 +36,8 @@ const Page = () => {
         setLoading(false)
         setCharacters(json.characters)
         setScores(json.scores)
-        setTable(json.table)
+        setPoints(json.points)
+        setBonus(json.bonus)
       })
   }, [])
 
@@ -57,94 +53,71 @@ const Page = () => {
     <div className={css.Ranking}>
       <header className={css.Box}>
         <h1 className={css.Title}>Classement</h1>
-        <ul className={css.List}>
-          {scores.map((score, i) => {
-            return (
-              <li key={i} data-ranking={i} className={css.ListItem}>
-                <div className={css.Emoji}>
-                  <Image
-                    src={getEmoji(i, score.name.toLowerCase())}
-                    width={128}
-                    height={128}
-                    alt=""
-                  />
-                </div>
-                <div>{score.name}</div>
-                <div>{score.score} points</div>
-              </li>
-            )
-          })}
-        </ul>
-      </header>
-
-      <section className={css.Box}>
-        <h1 className={css.Title}>Multiplicateurs</h1>
-        {characters
-          .filter(({ multiplier }) => multiplier > 1)
-          .map((character, i) => {
-            return (
-              <div key={i} className={css.Multiplier}>
-                <div className={css.MultiplierImage} title={character.name}>
-                  <Image src={getImage(character.name)} width={400} height={400} alt="" />
-                </div>
-                <div>
-                  Multiplicateur x{character.multiplier} ({character.why})
-                </div>
+        <h2>Bonus</h2>
+        {bonus.map((b, i) => {
+          return (
+            <div key={i} className={css.Multiplier}>
+              <div className={css.MultiplierImage} title={b.name}>
+                <Image src={getImage(b.name)} width={400} height={400} alt="" />
               </div>
-            )
-          })}
-      </section>
-
-      <section className={css.Box}>
-        <h1 className={css.Title}>Points en fonction du classement</h1>
-        <table className={css.Table}>
+              <div>
+                {b.points} points ({b.why})
+              </div>
+            </div>
+          )
+        })}
+        <table>
           <thead>
             <tr>
-              <td>Tier</td>
-              <td>Tier A</td>
-              <td>Tier B</td>
-              <td>Tier C</td>
-              <td>Tier D</td>
+              <td>Rang</td>
+              <td>Nom</td>
+              <td title="Fort probable">Total de A ({points.A} points)</td>
+              <td title="Envisageable">Total de B ({points.B} points)</td>
+              <td title="Mouais">Total de C ({points.C} points)</td>
+              <td title="Hors de question !">Total de D ({points.D} points)</td>
+              <td title="Hors de question !">Bonus</td>
+              <td>Total</td>
             </tr>
           </thead>
           <tbody>
-            {table.map((row, i) => {
+            {scores.map((score, i) => {
               return (
-                <tr key={i}>
-                  <td title={row.name}>{row.name}</td>
-                  <td>{row.A}</td>
-                  <td>{row.B}</td>
-                  <td>{row.C}</td>
-                  <td>{row.D}</td>
-                </tr>
+                <>
+                  <tr key={i} data-ranking={i}>
+                    <td className={css.Emoji}>
+                      <Image
+                        src={getEmoji(i, score.name.toLowerCase())}
+                        width={128}
+                        height={128}
+                        alt=""
+                      />
+                    </td>
+                    <td>{score.name}</td>
+                    <td>
+                      <div>{score.totalA * points.A}</div>
+                      <div className={css.Small}>{score.totalA} / 14</div>
+                    </td>
+                    <td>
+                      <div>{score.totalB * points.B}</div>
+                      <div className={css.Small}>{score.totalB} / 11</div>
+                    </td>
+                    <td>
+                      <div>{score.totalC * points.C}</div>
+                      <div className={css.Small}>{score.totalC} / 21</div>
+                    </td>
+                    <td>
+                      <div>{score.totalD * points.D}</div>
+                      <div className={css.Small}>{score.totalD} / 25</div>
+                    </td>
+                    <td>{score.bonus}</td>
+                    <td>{score.total} points</td>
+                  </tr>
+                </>
               )
             })}
           </tbody>
         </table>
-      </section>
-
-      <section className={css.Box}>
-        <h1 className={css.Title}>Ta tierlist</h1>
-        {tiers.map((tier, i) => {
-          return (
-            <div key={i} className={css.Tier}>
-              <div title={tier.name} className={css.TierTitle}>
-                {tier.name}
-              </div>
-              {tier.characters.map((name, j) => {
-                const character = characters.find((c) => c.name === name)
-                const points = character[tier.category] * character.multiplier
-
-                return (
-                  <div key={j} title={name} className={css.TierImage} data-points={points}>
-                    <Image src={getImage(name)} width={400} height={400} alt="" />
-                  </div>
-                )
-              })}
-            </div>
-          )
-        })}
-      </section>
+      </header>
     </div>
   )
 }

@@ -2,6 +2,9 @@
  * General
  **/
 
+.Ranking [title] {
+  color: black;
+}
 .Ranking [title="Fort probable"] {
   background-color: red;
 }
@@ -13,6 +16,23 @@
 }
 .Ranking [title="Hors de question !"] {
   background-color: greenyellow;
+}
+
+.Ranking [data-ranking="0"] {
+  font-weight: bold;
+  font-size: 50px;
+}
+.Ranking [data-ranking="1"] {
+  font-weight: bold;
+  font-size: 40px;
+}
+.Ranking [data-ranking="2"] {
+  font-weight: bold;
+  font-size: 30px;
+}
+.Ranking [data-ranking="3"] {
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .Centered {
@@ -36,52 +56,17 @@
   padding: 0 0 20px 0;
   margin: 0 0 20px 0;
 }
+.Small {
+  font-size: 14px;
+}
 
 /**
  * Ranking
  **/
 
-.List {
-  list-style: none;
-}
-.ListItem {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 0 10px 0;
-  padding: 0 0 0 100px;
-  height: 50px;
-}
-.Emoji {
-  position: absolute;
-  left: 0;
+.Emoji img {
   width: 50px;
   height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.Emoji img {
-  width: 100%;
-  height: 100%;
-}
-
-.ListItem[data-ranking="0"] {
-  font-weight: bold;
-  font-size: 60px;
-}
-.ListItem[data-ranking="1"] {
-  font-weight: bold;
-  font-size: 50px;
-}
-.ListItem[data-ranking="2"] {
-  font-weight: bold;
-  font-size: 40px;
-}
-.ListItem[data-ranking="3"] {
-  font-weight: bold;
-  font-size: 30px;
 }
 
 /**
