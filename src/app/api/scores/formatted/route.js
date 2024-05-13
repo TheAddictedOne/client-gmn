@@ -3,9 +3,9 @@ import { Client } from '@notionhq/client'
 // Constants
 
 const points = {
-  A: 100,
-  B: 40,
-  C: 15,
+  A: 200,
+  B: 80,
+  C: 30,
   D: 80,
 }
 
@@ -58,10 +58,10 @@ function computeScores(refs, friends) {
             case 'Fort probable':
               totalA++
               if (character.name === 'Nova') {
-                bonus += 10 * points.A
+                bonus += 1000
               }
               if (character.name === 'Solanum') {
-                bonus += 3 * points.A
+                bonus += 500
               }
               break
 
@@ -76,7 +76,7 @@ function computeScores(refs, friends) {
             case 'Hors de question !':
               totalD++
               if (character.name === 'Jessie') {
-                bonus += 3 * points.D
+                bonus += 300
               }
               break
           }
@@ -102,9 +102,9 @@ export async function GET() {
   const friends = await getRawFriends()
   const scores = computeScores(characters, friends)
   const bonus = [
-    { name: 'Nova', points: 10 * points.A, why: '1er prénom' },
-    { name: 'Solanum', points: 3 * points.A, why: '2nd prénom' },
-    { name: 'Jessie', points: 3 * points.D, why: 'Une de mes ex 🤯' },
+    { name: 'Nova', points: 1000, why: '1er prénom' },
+    { name: 'Solanum', points: 500, why: '2nd prénom' },
+    { name: 'Jessie', points: 300, why: 'Une de mes ex 🤯' },
   ]
 
   return Response.json({ characters, scores, points, bonus })
