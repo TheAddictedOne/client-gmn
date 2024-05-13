@@ -8,12 +8,15 @@ import Image from 'next/image'
 const Page = () => {
   const [users, setUsers] = useState([])
   const [characters, setCharacters] = useState([])
+  const [specialRules, setSpecialRules] = useState([])
+
   useEffect(() => {
     fetch('/api/scores/formatted')
       .then((data) => data.json())
       .then((json) => {
         setUsers(json.users)
         setCharacters(json.characters)
+        setSpecialRules(json.specialRules)
       })
   }, [])
 
@@ -35,13 +38,13 @@ const Page = () => {
 
   return (
     <>
-      <header className={css.Header}>
-        <h1 className={css.HeaderTitle}>Classement</h1>
-        <ul className={css.HeaderList}>
+      <header className={css.Box}>
+        <h1 className={css.Title}>Classement</h1>
+        <ul className={css.List}>
           {users.map(({ name, score }, i) => {
             return (
-              <li key={i} data-ranking={i} className={css.HeaderListItem}>
-                <div className={css.HeaderListItemEmoji}>
+              <li key={i} data-ranking={i} className={css.ListItem}>
+                <div className={css.Emoji}>
                   <Image src={getEmoji(i, name.toLowerCase())} width={128} height={128} alt="" />
                 </div>
                 <div>{name}</div>
@@ -51,6 +54,23 @@ const Page = () => {
           })}
         </ul>
       </header>
+
+      <section className={css.Box}>
+        <h1 className={css.Title}>Multiplicateurs</h1>
+        {specialRules.map((rule, i) => {
+          return (
+            <div key={i} className={css.SpecialRule}>
+              <div className={css.SpecialImage} title={rule.name}>
+                <Image src={getImage(rule.name)} width={400} height={400} alt="" />
+              </div>
+              <div>
+                Multiplicateur x{rule.multiplier} ({rule.why})
+              </div>
+            </div>
+          )
+        })}
+      </section>
+
       <section className={css.Details}>
         <div className={css.Header}>
           <div className={css.Name}>Name</div>

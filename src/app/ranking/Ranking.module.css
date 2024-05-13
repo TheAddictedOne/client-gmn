@@ -1,4 +1,8 @@
-.Header {
+/**
+ * General
+ **/
+
+.Box {
   display: flex;
   flex-direction: column;
   border: 2px solid black;
@@ -6,17 +10,22 @@
   margin: 20px;
   padding: 20px;
 }
-.HeaderTitle {
+.Title {
   font-size: 50px;
   text-align: center;
   border-bottom: 2px solid black;
   padding: 0 0 20px 0;
   margin: 0 0 20px 0;
 }
-.HeaderList {
+
+/**
+ * Ranking
+ **/
+
+.List {
   list-style: none;
 }
-.HeaderListItem {
+.ListItem {
   position: relative;
   display: flex;
   align-items: center;
@@ -25,7 +34,7 @@
   padding: 0 0 0 100px;
   height: 50px;
 }
-.HeaderListItemEmoji {
+.Emoji {
   position: absolute;
   left: 0;
   width: 50px;
@@ -34,27 +43,66 @@
   align-items: center;
   justify-content: center;
 }
-.HeaderListItemEmoji img {
+.Emoji img {
   width: 100%;
   height: 100%;
 }
 
-.HeaderListItem[data-ranking="0"] {
+.ListItem[data-ranking="0"] {
   font-weight: bold;
   font-size: 60px;
 }
-.HeaderListItem[data-ranking="1"] {
+.ListItem[data-ranking="1"] {
   font-weight: bold;
   font-size: 50px;
 }
-.HeaderListItem[data-ranking="2"] {
+.ListItem[data-ranking="2"] {
   font-weight: bold;
   font-size: 40px;
 }
-.HeaderListItem[data-ranking="3"] {
+.ListItem[data-ranking="3"] {
   font-weight: bold;
   font-size: 30px;
 }
+
+/**
+ * Special Rules
+ **/
+.SpecialRule {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  align-items: center;
+}
+.SpecialImage::before {
+  content: attr(title);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
+  color: white;
+  background-color: #0004;
+  font-weight: bold;
+  font-size: 30px;
+  text-shadow: 4px 4px black;
+}
+.SpecialImage {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 20px 0 0;
+}
+.SpecialImage img {
+  width: 100%;
+  height: 100%;
+}
+
+
 
 .Details {
   display: flex;
