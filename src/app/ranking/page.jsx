@@ -53,19 +53,6 @@ const Page = () => {
     <div className={css.Ranking}>
       <header className={css.Box}>
         <h1 className={css.Title}>Classement</h1>
-        <h2>Bonus</h2>
-        {bonus.map((b, i) => {
-          return (
-            <div key={i} className={css.Multiplier}>
-              <div className={css.MultiplierImage} title={b.name}>
-                <Image src={getImage(b.name)} width={400} height={400} alt="" />
-              </div>
-              <div>
-                {b.points} points ({b.why})
-              </div>
-            </div>
-          )
-        })}
         <table>
           <thead>
             <tr>
@@ -118,6 +105,21 @@ const Page = () => {
           </tbody>
         </table>
       </header>
+      <section className={css.Box}>
+        <h1 className={css.Title}>Bonus</h1>
+        {bonus.map((b, i) => {
+          return (
+            <div key={i} className={css.Multiplier}>
+              <div className={css.MultiplierImage} title={b.name}>
+                <Image src={getImage(b.name)} width={400} height={400} alt="" />
+              </div>
+              <div>
+                {b.points} points ({b.why})
+              </div>
+            </div>
+          )
+        })}
+      </section>
     </div>
   )
 }
