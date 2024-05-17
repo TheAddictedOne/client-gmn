@@ -33,8 +33,8 @@ const Header = () => {
   return (
     <header className={css.Header}>
       <input type="text" placeholder="Nom du joueur" {...{ onChange }} value={username} />
-      <button className={css.Button} onClick={onSubmit}>
-        Sauvegarder la tierlist en DB
+      <button className={css.Button} disabled>
+        Terminé !
       </button>
     </header>
   )

@@ -59,17 +59,32 @@ const Page = () => {
           className={[css.Title, css.Clickable].join(' ')}
           onClick={() => setCharacters(defaultChars)}
         >
-          Classement
+          Classement (cliquable pour voir notre tierlist)
         </h1>
         <table>
           <thead>
             <tr>
               <td>Rang</td>
-              <td>Nom</td>
-              <td title="Fort probable">Total de A ({points.A} points)</td>
-              <td title="Envisageable">Total de B ({points.B} points)</td>
-              <td title="Mouais">Total de C ({points.C} points)</td>
-              <td title="Hors de question !">Total de D ({points.D} points)</td>
+              <td>
+                <div>Nom</div>
+                <div>(cliquable pour voir la tierlist)</div>
+              </td>
+              <td title="Fort probable">
+                <div>Total de A</div>
+                <div>({points.A} points)</div>
+              </td>
+              <td title="Envisageable">
+                <div>Total de B</div>
+                <div>({points.B} points)</div>
+              </td>
+              <td title="Mouais">
+                <div>Total de C</div>
+                <div>({points.C} points)</div>
+              </td>
+              <td title="Hors de question !">
+                <div>Total de D</div>
+                <div>({points.D} points)</div>
+              </td>
               <td>Bonus</td>
               <td>Total</td>
             </tr>

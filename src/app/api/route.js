@@ -1,6 +1,8 @@
 import { Client } from '@notionhq/client'
 
 export async function POST(req) {
+  return Response.json({ KO: 'Not possible anymore' })
+
   const body = await req.json()
 
   const notion = new Client({ auth: process.env.GMN_KEY })
