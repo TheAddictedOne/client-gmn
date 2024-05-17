@@ -136,26 +136,23 @@
   color: white;
   position: absolute;
   z-index: 1;
+  font-size: 20px;
 }
+.TierImage.Green::before { background-color: #0f05 ;}
+.TierImage.Red::before { background-color: #f005 ;}
 .TierImage {
   position: relative;
   width: 100px;
   height: 100px;
 }
-.TierImage::after {
-  content: attr(data-points);
-  display: flex;
-  position: absolute;
-  top: 0;
-  justify-content: center;
-  font-weight: bold;
-  color: white;
-  width: 100px;
-  z-index: 2;
-  font-size: 25px;
-  text-shadow: 2px 2px black;
-}
 .TierImage img {
   width: 100%;
   height: 100%;
+}
+.Clickable {
+  cursor: pointer;
+}
+.Clickable:hover {
+  background-color: #0004;
+  font-style: italic;
 }

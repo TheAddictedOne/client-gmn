@@ -86,7 +86,16 @@ function computeScores(refs, friends) {
       const total =
         totalA * points.A + totalB * points.B + totalC * points.C + totalD * points.D + bonus
 
-      return { name: friend.name, totalA, totalB, totalC, totalD, bonus, total }
+      return {
+        name: friend.name,
+        characters: friend.characters,
+        totalA,
+        totalB,
+        totalC,
+        totalD,
+        bonus,
+        total,
+      }
     })
     .sort((a, b) => {
       if (a.total < b.total) return 1

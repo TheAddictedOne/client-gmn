@@ -19,11 +19,13 @@ function getEmoji(i, name) {
   if (name === 'yoyo') return '/yoyo.gif'
   if (name === 'oceane') return '/oce.png'
   if (name === 'david-qa') return '/david-qa.png'
+  if (name === 'lucie') return '/lucie.png'
   return '/happycry.png'
 }
 
 const Page = () => {
   const [loading, setLoading] = useState(true)
+  const [defaultChars, setDefaultChars] = useState([])
   const [characters, setCharacters] = useState([])
   const [scores, setScores] = useState([])
   const [points, setPoints] = useState({})
@@ -34,6 +36,7 @@ const Page = () => {
       .then((data) => data.json())
       .then((json) => {
         setLoading(false)
+        setDefaultChars(json.characters)
         setCharacters(json.characters)
         setScores(json.scores)
         setPoints(json.points)
@@ -52,7 +55,12 @@ const Page = () => {
   return (
     <div className={css.Ranking}>
       <header className={css.Box}>
-        <h1 className={css.Title}>Classement</h1>
+        <h1
+          className={[css.Title, css.Clickable].join(' ')}
+          onClick={() => setCharacters(defaultChars)}
+        >
+          Classement
+        </h1>
         <table>
           <thead>
             <tr>
@@ -77,9 +85,12 @@ const Page = () => {
                         width={128}
                         height={128}
                         alt=""
+                        unoptimized
                       />
                     </td>
-                    <td>{score.name}</td>
+                    <td onClick={() => setCharacters(score.characters)} className={css.Clickable}>
+                      {score.name}
+                    </td>
                     <td>
                       <div>{score.totalA * points.A}</div>
                       <div className={css.Small}>{score.totalA} / 14</div>
@@ -105,6 +116,34 @@ const Page = () => {
           </tbody>
         </table>
       </header>
+
+      <section className={css.Box}>
+        <h1 className={css.Title}>TierList</h1>
+        {['Fort probable', 'Envisageable', 'Mouais', 'Hors de question !'].map((category, key) => {
+          return (
+            <div className={css.Tier} key={key}>
+              <div title={category} className={css.TierTitle}>
+                {category}
+              </div>
+              {characters
+                .filter((c) => c.rank === category)
+                .map((c, i) => {
+                  const good = defaultChars.find((char) => c.name === char.name)
+                  const className =
+                    good.rank === category
+                      ? [css.TierImage, css.Green].join(' ')
+                      : [css.TierImage, css.Red].join(' ')
+                  return (
+                    <div key={i} className={className} title={c.name}>
+                      <img src={getImage(c.name)} />
+                    </div>
+                  )
+                })}
+            </div>
+          )
+        })}
+      </section>
+
       <section className={css.Box}>
         <h1 className={css.Title}>Bonus</h1>
         {bonus.map((b, i) => {
